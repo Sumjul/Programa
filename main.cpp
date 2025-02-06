@@ -35,13 +35,21 @@ int main()
 			sum += m;
 		}
 		n.gal = 0.4 * (sum / n.paz.size()) + 0.6 * n.egz;
+
+		std::sort(n.paz.begin(), n.paz.end());
+		if (n.paz.size() % 2 == 0) {
+			n.med = (n.paz[n.paz.size() / 2 - 1] + n.paz[n.paz.size() / 2]) / 2.0;
+		}
+		else {
+			n.med = n.paz[n.paz.size() / 2];
+		}
 	}
 
 	//Isvedami studentu duomenys
-	cout << endl << std::left << std::setw(15) << "Pavarde" << std::setw(15) << "Vardas" << std::setw(20) << "Galutinis (Vid.)" << endl;
-	cout << "------------------------------------------------------------" << endl;
+	cout << endl << std::left << std::setw(15) << "Pavarde" << std::setw(15) << "Vardas" << std::setw(20) << "Galutinis (Vid.) /" << "Galutinis (Med.)" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
 	for (auto n :grupe) {
-		cout << std::left << std::setw(15) << n.pav << std::setw(15) << n.var << std::setw(15) << std::fixed << std::setprecision(2) << n.gal << endl;
+		cout << std::left << std::setw(15) << n.pav << std::setw(15) << n.var << std::setw(20) << std::fixed << std::setprecision(2) << n.gal << std::setw(20) << std::fixed << std::setprecision(2) << n.med << endl;
 	}
 	cout << endl;
 	system("pause");

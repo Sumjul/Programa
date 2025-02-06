@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <algorithm> 
 
 using std::cout;
 using std::cin;
@@ -17,6 +18,7 @@ struct Studentas {
 	vector <int> paz;
 	int egz = 0;
 	double gal = 0;
+	double med = 0;
 };
 
 #endif
