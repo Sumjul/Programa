@@ -12,11 +12,11 @@ using std::endl;
 using std::vector;
 using std::string;
 
-struct Stud {
+struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
-	vector <int> paz;
-	double gal;
-	int egz;
+	vector <int> paz {0};
+	int egz = 0;
+	double gal = 0;
 };
 
 #endif
