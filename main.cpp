@@ -1,29 +1,49 @@
 #include "headers.h"
 
+
+int skaicioTikrinimas (int min, int max) {
+	int skaicius;
+	while (true) {
+		cin >> skaicius;
+		if (skaicius >= min && skaicius <= max) {
+			break;
+		} else {
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			cout << "Ivestis netinkama. Iveskite dar karta: ";
+		}
+	}
+	return skaicius;
+}
 int main()
 {
 	vector <Studentas> grupe;
 	cout << "Iveskite studentu skaiciu: ";
-	int kiek;
-	cin >> kiek;
+	int kiekStud;
+	kiekStud = skaicioTikrinimas(1, 100);
 
 	//Ivedami studentu duomenis
-	for (int i = 0; i < kiek; i++) {
+	for (int i = 0; i < kiekStud; i++) {
 		Studentas laikinas;
 		cout << "Iveskite studento varda: ";
 		cin >> laikinas.var;
 		cout << "Iveskite studento pavarde: ";
 		cin >> laikinas.pav;
-		cout << "Iveskite studento namu darbu rezultatus: ";
-		int paz;
-		cin >> paz;
-		while (paz >0 && paz<=10) {
-			laikinas.paz.push_back(paz);
-			cin >> paz;
-		}
-		cout << "Iveskite studento egzamino pazymi: ";
-		cin >> laikinas.egz;
 
+		cout << "Iveskite studento atliktu namu darbu skaiciu: ";
+		int kiekPaz;
+		kiekPaz = skaicioTikrinimas(1, 100);
+
+		cout << "Iveskite studento visus atliktu namu darbu rezultatus: ";
+		int paz;
+		for (int j = 0; j < kiekPaz; j++) {
+			laikinas.paz.push_back(skaicioTikrinimas(1, 10));
+		}
+
+		cout << "Iveskite studento egzamino pazymi: ";
+		int egz;
+		laikinas.egz = skaicioTikrinimas(1, 10);
+		
 		grupe.push_back(laikinas);
 		cout << "------------------------------------------------------------" << endl;
 	}
