@@ -1,24 +1,4 @@
-//h failas
-
-#include <iostream>
-#include <vector>
-#include <string>
-#include <iomanip>
-
-using std::cout;
-using std::cin;
-using std::endl;
-using std::vector;
-using std::string;
-
-struct Stud {
-	string var = "a", pav = "b";
-	vector <int> paz;
-	double gal;
-	int egz;
-};
-
-//Atskiras failas cpp
+#include "headers.h"
 
 int main()
 {
@@ -52,5 +32,6 @@ int main()
 	for (auto n : grupe) {
 		cout << n.var << "\t\t" << n.pav << "\t\t" << n.egz << "\t\t" << n.gal << endl;
 	}
+	system("pause");
 	return 0;
 }
