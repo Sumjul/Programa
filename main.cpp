@@ -4,17 +4,17 @@ int main()
 {
 	vector <Studentas> grupe;
 	cout << "Iveskite studentu skaiciu: ";
-	int n;
-	cin >> n;
+	int kiek;
+	cin >> kiek;
 
 	//Ivedami studentu duomenis
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < kiek; i++) {
 		Studentas laikinas;
 		cout << "Iveskite studento varda: ";
 		cin >> laikinas.var;
 		cout << "Iveskite studento pavarde: ";
 		cin >> laikinas.pav;
-		cout << "Iveskite studento pazymius: ";
+		cout << "Iveskite studento namu darbu rezultatus: ";
 		int paz;
 		cin >> paz;
 		while (paz >0 && paz<=10) {
@@ -25,11 +25,12 @@ int main()
 		cin >> laikinas.egz;
 
 		grupe.push_back(laikinas);
+		cout << "------------------------------------------------------------" << endl;
 	}
 
 	//Skaiciuojami galutiniai pazymiai
 	for (auto& n :grupe) {
-		int sum = 0;
+		double sum = 0;
 		for (auto m :n.paz) {
 			sum += m;
 		}
@@ -37,10 +38,12 @@ int main()
 	}
 
 	//Isvedami studentu duomenys
-	cout << "Pavarde\t\t" << " " << "Vardas\t\t" << " " << "Galutinis (Vid.)\t\t" << endl;
+	cout << endl << std::left << std::setw(15) << "Pavarde" << std::setw(15) << "Vardas" << std::setw(20) << "Galutinis (Vid.)" << endl;
+	cout << "------------------------------------------------------------" << endl;
 	for (auto n :grupe) {
-		cout << n.pav << "\t\t" << n.var << "\t\t" << n.gal << endl;
+		cout << std::left << std::setw(15) << n.pav << std::setw(15) << n.var << std::setw(15) << std::fixed << std::setprecision(2) << n.gal << endl;
 	}
+	cout << endl;
 	system("pause");
 	return 0;
 }

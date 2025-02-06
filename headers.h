@@ -14,7 +14,7 @@ using std::string;
 
 struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
-	vector <int> paz {0};
+	vector <int> paz;
 	int egz = 0;
 	double gal = 0;
 };
