@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "headersArr.h"
 
 int skaicioTikrinimas (int min, int max) {
 	int skaicius;
