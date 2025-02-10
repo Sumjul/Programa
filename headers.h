@@ -5,14 +5,14 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-#include <algorithm> 
+#include <algorithm>
+#include <random>
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
-
 struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
 	vector <int> paz;
