@@ -18,6 +18,8 @@ using std::string;
 struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
 	vector <int> paz;
+	int pazAr[100];
+	int pazSk = 0;
 	int egz = 0;
 	double gal = 0;
 	double med = 0;
