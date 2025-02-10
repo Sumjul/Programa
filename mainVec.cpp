@@ -29,11 +29,11 @@ int main()
 
 	//Ivedami studentu duomenis
 	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
-	int kiekStud = skaicioTikrinimas(0, 1000);
+	int kiekStud = skaicioTikrinimas(0, maxStud);
 	bool skZinomas = true;
 	if (kiekStud == 0) {
 		skZinomas = false;
-		kiekStud = 1000;
+		kiekStud = maxStud;
 	}
 
 	for (int i = 0; i < kiekStud; i++) {

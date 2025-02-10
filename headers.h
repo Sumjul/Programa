@@ -15,6 +15,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
+const int maxStud = 1000;
 struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
 	vector <int> paz;

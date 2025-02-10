@@ -17,7 +17,7 @@ int main()
 {
 	string vardai[30] = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
 	string pavardes[30] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
-	vector <Studentas> grupe;
+	Studentas grupe[maxStud];
 	srand(time(NULL));
 	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
 	cout << "1 - pildyti duomenis rankiniu budu;" << endl;
@@ -29,11 +29,11 @@ int main()
 
 	//Ivedami studentu duomenis
 	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
-	int kiekStud = skaicioTikrinimas(0, 1000);
+	int kiekStud = skaicioTikrinimas(0, maxStud);
 	bool skZinomas = true;
 	if (kiekStud == 0) {
 		skZinomas = false;
-		kiekStud = 1000;
+		kiekStud = maxStud;
 	}
 
 	for (int i = 0; i < kiekStud; i++) {
@@ -74,7 +74,7 @@ int main()
 
 			cout << "Iveskite studento egzamino pazymi: ";
 			laikinas.egz = skaicioTikrinimas(1, 10);
-			grupe.push_back(laikinas);
+			grupe[i] = laikinas;
 			cout << "------------------------------------------------------------" << endl;
 		}
 		else if (veiksmas == 2 || veiksmas == 3) {
@@ -82,17 +82,21 @@ int main()
 			for (int j = 0; j < pazSk; j++)
 				laikinas.pazAr[laikinas.pazSk++] = rand() % 10 + 1;
 			laikinas.egz = rand() % 10 + 1;
-			grupe.push_back(laikinas);
+			grupe[i] = laikinas;
 		}
 
 		if (skZinomas == false) {
 			cout << "1 - ivesti dar vieno studento duomenis; 0 - baigti ivedima. ";
 			int arIvesti = skaicioTikrinimas(0, 1);
-			if (arIvesti == 0) break;
+			if (arIvesti == 0) {
+				kiekStud = i + 1;
+				break;
+			}
 		}
 	}
 	//Skaiciuojami galutiniai pazymiai
-	for (auto& n :grupe) {
+	for (int i = 0; i < kiekStud; i++) {
+		Studentas& n = grupe[i];
 		double sum = 0;
 		for (int i = 0; i < n.pazSk; i++)
 			sum += n.pazAr[i];
@@ -110,7 +114,8 @@ int main()
 	if (rezult == 1) cout << std::setw(20) << "Galutinis (Vid.)" << endl;
 	else if (rezult == 2 ) cout << std::setw(20) << "Galutinis (Med.)" << endl;
 	cout << "------------------------------------------------------------" << endl;
-	for (auto n :grupe) {
+	for (int i = 0; i < kiekStud; i++) {
+		Studentas& n = grupe[i];
 		cout << std::left << std::setw(20) << n.pav << std::setw(15) << n.var;
 		if (rezult == 1) cout << std::setw(20) << std::fixed << std::setprecision(2) << n.gal << endl;
 		else if (rezult == 2) cout << std::setw(20) << std::fixed << std::setprecision(2) << n.med << endl;
