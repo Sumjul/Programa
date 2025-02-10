@@ -19,7 +19,7 @@ const int maxStud = 1000;
 struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
 	vector <int> paz;
-	int pazAr[100];
+	int* pazAr = new int[100];
 	int pazSk = 0;
 	int egz = 0;
 	double gal = 0;
