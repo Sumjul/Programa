@@ -19,16 +19,16 @@ int main()
 	vector<string> pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
 	vector <Studentas> grupe;
 	srand(time(NULL));
-	cout << "Sveiki atvyke i studentu pazymiu skaiciuokle! " << endl;
-	cout << "Noredami pildyti duomenis rankiniu budu - iveskite 1;" << endl;
-	cout << "Generuoti pazymius - 2;" << endl;
-	cout << "Generuoti pazymius, vardus ir pavardes - 3;" << endl;
-	cout << "Baigti darba - 4." << endl;
+	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
+	cout << "1 - pildyti duomenis rankiniu budu;" << endl;
+	cout << "2 - generuoti pazymius;" << endl;
+	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
+	cout << "4 - baigti darba." << endl;
 	int veiksmas = skaicioTikrinimas(1, 4);
 	if (veiksmas == 4) return 0;
 
 	//Ivedami studentu duomenis
-	cout << "Iveskite studentu skaiciu. Jei skaicius nezinomas, iveskite 0: ";
+	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
 	int kiekStud = skaicioTikrinimas(0, 1000);
 	bool skZinomas = true;
 	if (kiekStud == 0) {
@@ -50,7 +50,7 @@ int main()
 		}
 
 		if (veiksmas == 1) {
-			cout << "Iveskite studento atliktu namu darbu skaiciu. Jei skaicius nezinomas - iveskite 0: ";
+			cout << "Iveskite studento atliktu namu darbu kieki (iveskite 0, jei kiekis yra nezinomas): ";
 			int kiekPaz = skaicioTikrinimas(0, 100);
 			bool pazZinomas = true;
 			if (kiekPaz == 0) {
@@ -58,7 +58,7 @@ int main()
 				kiekPaz = 100;
 			}
 			if (pazZinomas == false) {
-				cout << "Iveskite studento visus atliktu namu darbu rezultatus. Noredami baigti - iveskite 0: ";
+				cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
 				while (true) {
 					int pazymys = skaicioTikrinimas(0, 10);
 					if (pazymys == 0) break;
@@ -85,7 +85,7 @@ int main()
 		}
 
 		if (skZinomas == false) {
-			cout << "Ar norite ivesti dar vieno studento duomenis? (1 - taip, 0 - ne): ";
+			cout << "1 - ivesti dar vieno studento duomenis; 0 - baigti ivedima. ";
 			int arIvesti = skaicioTikrinimas(0, 1);
 			if (arIvesti == 0) break;
 		}
@@ -103,7 +103,7 @@ int main()
 		else n.med = n.paz[n.paz.size() / 2];
 	}
 	//Isvedami studentu duomenys
-	cout << "Jei norite gauti vidurkius - iveskite 1; jei medianas - iveskite 2: ";
+	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int rezult = skaicioTikrinimas(1, 2);
 	cout << endl << std::left << std::setw(20) << "Pavarde" << std::setw(15) << "Vardas";
 	if (rezult == 1) cout << std::setw(20) << "Galutinis (Vid.)" << endl;
