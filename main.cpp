@@ -15,6 +15,8 @@ int skaicioTikrinimas (int min, int max) {
 }
 int main()
 {
+	vector<string> vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
+	vector<string> pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
 	vector <Studentas> grupe;
 	srand(time(NULL));
 	cout << "Sveiki atvyke i studentu pazymiu skaiciuokle! " << endl;
@@ -36,14 +38,15 @@ int main()
 
 	for (int i = 0; i < kiekStud; i++) {
 		Studentas laikinas;
-		cout << "Iveskite studento varda: ";
-		cin >> laikinas.var;
-		cout << "Iveskite studento pavarde: ";
-		cin >> laikinas.pav;
-		if (skZinomas == false && veiksmas == 2) {
-			cout << "Ar norite ivesti dar vieno studento duomenis? (1 - taip, 0 - ne): ";
-			int arIvesti = skaicioTikrinimas(0, 1);
-			if (arIvesti == 0) break;
+		if (veiksmas == 1 || veiksmas == 2) {
+			cout << "Iveskite studento varda: ";
+			cin >> laikinas.var;
+			cout << "Iveskite studento pavarde: ";
+			cin >> laikinas.pav;
+		}
+		else if (veiksmas == 3) {
+			laikinas.var = vardai[rand() % vardai.size()];
+			laikinas.pav = pavardes[rand() % pavardes.size()];
 		}
 
 		if (veiksmas == 1) {
@@ -72,18 +75,19 @@ int main()
 			laikinas.egz = skaicioTikrinimas(1, 10);
 			grupe.push_back(laikinas);
 			cout << "------------------------------------------------------------" << endl;
-			if (skZinomas == false) {
-				cout << "Ar norite ivesti dar vieno studento duomenis? (1 - taip, 0 - ne): ";
-				int arIvesti = skaicioTikrinimas(0, 1);
-				if (arIvesti == 0) break;
-			}
 		}
-		if (veiksmas == 2 || veiksmas == 3) {
+		else if (veiksmas == 2 || veiksmas == 3) {
 			int kiekPaz = rand() % 100 + 1;
 			for (int j = 0; j < kiekPaz; j++)
 				laikinas.paz.push_back(rand() % 10 + 1);
 			laikinas.egz = rand() % 10 + 1;
 			grupe.push_back(laikinas);
+		}
+
+		if (skZinomas == false) {
+			cout << "Ar norite ivesti dar vieno studento duomenis? (1 - taip, 0 - ne): ";
+			int arIvesti = skaicioTikrinimas(0, 1);
+			if (arIvesti == 0) break;
 		}
 	}
 	//Skaiciuojami galutiniai pazymiai
@@ -101,12 +105,12 @@ int main()
 	//Isvedami studentu duomenys
 	cout << "Jei norite gauti vidurkius - iveskite 1; jei medianas - iveskite 2: ";
 	int rezult = skaicioTikrinimas(1, 2);
-	cout << endl << std::left << std::setw(15) << "Pavarde" << std::setw(15) << "Vardas";
+	cout << endl << std::left << std::setw(20) << "Pavarde" << std::setw(15) << "Vardas";
 	if (rezult == 1) cout << std::setw(20) << "Galutinis (Vid.)" << endl;
 	else if (rezult == 2 ) cout << std::setw(20) << "Galutinis (Med.)" << endl;
 	cout << "------------------------------------------------------------" << endl;
 	for (auto n :grupe) {
-		cout << std::left << std::setw(15) << n.pav << std::setw(15) << n.var;
+		cout << std::left << std::setw(20) << n.pav << std::setw(15) << n.var;
 		if (rezult == 1) cout << std::setw(20) << std::fixed << std::setprecision(2) << n.gal << endl;
 		else if (rezult == 2) cout << std::setw(20) << std::fixed << std::setprecision(2) << n.med << endl;
 	}

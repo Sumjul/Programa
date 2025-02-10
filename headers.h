@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>
 #include <iomanip>
 #include <algorithm>
 #include <random>
@@ -13,6 +14,7 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
 struct Studentas {
 	string var = "Vardenis", pav = "Pavardenis";
 	vector <int> paz;
@@ -21,4 +23,5 @@ struct Studentas {
 	double med = 0;
 };
 
+int skaicioTikrinimas(int min, int max);
 #endif
