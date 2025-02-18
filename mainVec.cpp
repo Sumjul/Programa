@@ -13,19 +13,45 @@ int skaicioTikrinimas (int min, int max) {
 	}
 	return skaicius;
 }
+void bufer_file(string file1, string file2) {
+	vector <string> splited;
+	string eil;
+	std::stringstream my_buffer;
+	std::ifstream open_f(file1);
+    my_buffer << open_f.rdbuf();
+    open_f.close();
+	while (my_buffer){ 
+		if (!my_buffer.eof()) {
+		  std::getline(my_buffer, eil);
+		  splited.push_back(eil);}
+		else break;
+	}
+	std::string outputas="";
+	for (std::string &a: splited) (a.compare(*splited.rbegin()) !=0) ? outputas+=a+"\n":outputas+=a;
+	splited.clear();
+	std::ofstream out_f(file2);
+    out_f << outputas;
+    out_f.close();
+}
 int main()
 {
-	vector<string> vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
-	vector<string> pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
+	vector <string> vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
+	vector <string> pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
 	vector <Studentas> grupe;
 	srand(time(NULL));
 	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
 	cout << "1 - pildyti duomenis rankiniu budu;" << endl;
 	cout << "2 - generuoti pazymius;" << endl;
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
-	cout << "4 - baigti darba." << endl;
+	cout << "4 - nauduoti duomenis is failo;" << endl;
+	cout << "5 - baigti darba." << endl;
 	int veiksmas = skaicioTikrinimas(1, 4);
-	if (veiksmas == 4) return 0;
+	if (veiksmas == 5) return 0;
+
+	if (veiksmas == 4) {
+		bufer_file("kursiokai.txt", "rezultatas.txt");
+		return 0;
+	}
 
 	//Ivedami studentu duomenis
 	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
