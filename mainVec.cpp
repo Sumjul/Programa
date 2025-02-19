@@ -13,26 +13,65 @@ int skaicioTikrinimas (int min, int max) {
 	}
 	return skaicius;
 }
-void bufer_file(string file1, string file2) {
-	vector <string> splited;
-	string eil;
-	std::stringstream my_buffer;
-	std::ifstream open_f(file1);
-    my_buffer << open_f.rdbuf();
-    open_f.close();
-	while (my_buffer){ 
-		if (!my_buffer.eof()) {
-		  std::getline(my_buffer, eil);
-		  splited.push_back(eil);}
-		else break;
+void Skaiciavimai(vector <Studentas>& grupe) {
+	for (auto& n :grupe) {
+		double sum = 0;
+		for (auto m :n.paz)
+			sum += m;
+		n.gal = 0.4 * (sum / n.paz.size()) + 0.6 * n.egz;
+		std::sort(n.paz.begin(), n.paz.end());
+		if (n.paz.size() % 2 == 0)
+			n.med = (n.paz[n.paz.size() / 2 - 1] + n.paz[n.paz.size() / 2]) / 2.0;
+		else n.med = n.paz[n.paz.size() / 2];
 	}
-	std::string outputas="";
-	for (std::string &a: splited) (a.compare(*splited.rbegin()) !=0) ? outputas+=a+"\n":outputas+=a;
-	splited.clear();
-	std::ofstream out_f(file2);
-    out_f << outputas;
-    out_f.close();
 }
+
+void bufer_file(vector<Studentas>& grupe, string file1, string file2) {
+	std::ifstream open_f(file1);
+	while (!open_f) {
+        cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: " << endl;
+        cin >> file1;
+		open_f.open(file1);
+    }
+	string eil;
+	while (std::getline(open_f, eil)) {
+		std::istringstream iss(eil);
+		Studentas laikinas;
+		iss >> laikinas.var >> laikinas.pav;
+		int pazymys;
+		vector <int> pazymiai;
+		while (iss >> pazymys)
+			pazymiai.push_back(pazymys);
+		if(!pazymiai.empty()) {
+			laikinas.egz = pazymiai.back();
+			pazymiai.pop_back();
+			laikinas.paz = pazymiai;
+		}
+		grupe.push_back(laikinas);
+	}
+	open_f.close();
+	Skaiciavimai(grupe);
+    
+
+	std::ofstream out_f(file2);
+	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
+	int rezult = skaicioTikrinimas(1, 2);
+	out_f << endl << std::left << std::setw(20) << "Pavarde" << std::setw(15) << "Vardas";
+	if (rezult == 1) out_f << std::setw(20) << "Galutinis (Vid.)" << endl;
+	else if (rezult == 2 ) out_f << std::setw(20) << "Galutinis (Med.)" << endl;
+	out_f << "------------------------------------------------------------" << endl;
+	for (auto n :grupe) {
+		out_f << std::left << std::setw(20) << n.pav << std::setw(15) << n.var;
+		if (rezult == 1) out_f << std::setw(20) << std::fixed << std::setprecision(2) << n.gal << endl;
+		else if (rezult == 2) out_f << std::setw(20) << std::fixed << std::setprecision(2) << n.med << endl;
+	}
+    out_f.close();
+	cout << "Duomenys nukopijuoti i faila: " << file2 << endl;
+	cout << endl;
+}
+
+
+
 int main()
 {
 	vector <string> vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
@@ -45,11 +84,15 @@ int main()
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
 	cout << "4 - nauduoti duomenis is failo;" << endl;
 	cout << "5 - baigti darba." << endl;
-	int veiksmas = skaicioTikrinimas(1, 4);
+	int veiksmas = skaicioTikrinimas(1, 5);
 	if (veiksmas == 5) return 0;
 
 	if (veiksmas == 4) {
-		bufer_file("kursiokai.txt", "rezultatas.txt");
+		cout << "Iveskite failo pavadinima, is kurio bus nuskaitomi duomenys: ";
+		string failas;
+		cin >> failas;
+		bufer_file(grupe, failas, "rezultatas.txt");
+		system("pause");
 		return 0;
 	}
 
@@ -116,18 +159,10 @@ int main()
 			if (arIvesti == 0) break;
 		}
 	}
-	//Skaiciuojami galutiniai pazymiai
-	for (auto& n :grupe) {
-		double sum = 0;
-		for (auto m :n.paz)
-			sum += m;
-		n.gal = 0.4 * (sum / n.paz.size()) + 0.6 * n.egz;
 
-		std::sort(n.paz.begin(), n.paz.end());
-		if (n.paz.size() % 2 == 0)
-			n.med = (n.paz[n.paz.size() / 2 - 1] + n.paz[n.paz.size() / 2]) / 2.0;
-		else n.med = n.paz[n.paz.size() / 2];
-	}
+	//Skaiciuojami galutiniai pazymiai
+	Skaiciavimai(grupe);
+
 	//Isvedami studentu duomenys
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int rezult = skaicioTikrinimas(1, 2);
