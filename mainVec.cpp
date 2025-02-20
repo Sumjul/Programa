@@ -20,6 +20,10 @@ void Skaiciavimai(vector <Studentas>& grupe) {
 			sum += m;
 		n.gal = 0.4 * (sum / n.paz.size()) + 0.6 * n.egz;
 		std::sort(n.paz.begin(), n.paz.end());
+		if (n.paz.empty()) {
+			n.med = 0;
+			continue;
+		}
 		if (n.paz.size() % 2 == 0)
 			n.med = (n.paz[n.paz.size() / 2 - 1] + n.paz[n.paz.size() / 2]) / 2.0;
 		else n.med = n.paz[n.paz.size() / 2];
@@ -34,6 +38,7 @@ void bufer_file(vector<Studentas>& grupe, string file1, string file2) {
 		open_f.open(file1);
     }
 	string eil;
+	std::getline(open_f, eil);
 	while (std::getline(open_f, eil)) {
 		std::istringstream iss(eil);
 		Studentas laikinas;
