@@ -17,6 +17,13 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+using std::ostream;
+using std::ifstream;
+using std::ofstream;
+using std::left;
+using std::setw;
+using std::fixed;
+using std::setprecision;
 
 const int maxStud = 1000;
 struct Studentas {
@@ -29,5 +36,4 @@ struct Studentas {
 	double med = 0;
 };
 
-int skaicioTikrinimas(int min, int max);
 #endif

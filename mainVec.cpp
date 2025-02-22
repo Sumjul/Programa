@@ -1,6 +1,6 @@
-#include "headers.h"
+#include "global.h"
 
-int skaicioTikrinimas (int min, int max) {
+int NumberCheck (int min, int max) {
 	int skaicius;
 	while (true) {
 		if (cin >> skaicius && skaicius >= min && skaicius <= max) {
@@ -13,13 +13,13 @@ int skaicioTikrinimas (int min, int max) {
 	}
 	return skaicius;
 }
-void Skaiciavimai(vector <Studentas>& grupe) {
+void Calculations(vector <Studentas>& grupe) {
 	for (auto& n :grupe) {
 		double sum = 0;
 		for (auto m :n.paz)
 			sum += m;
 		n.gal = 0.4 * (sum / n.paz.size()) + 0.6 * n.egz;
-		std::sort(n.paz.begin(), n.paz.end());
+		sort(n.paz.begin(), n.paz.end());
 		if (n.paz.empty()) {
 			n.med = 0;
 			continue;
@@ -30,16 +30,37 @@ void Skaiciavimai(vector <Studentas>& grupe) {
 	}
 }
 
-void bufer_file(vector<Studentas>& grupe, string file1, string file2) {
-	std::ifstream open_f(file1);
-	while (!open_f) {
+void Output(vector <Studentas>& grupe, ostream &out) {
+	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
+	int rezult = NumberCheck(1, 2);
+	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
+	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini pazymi." << endl;
+	int rusiavimas = NumberCheck(1, 3);
+	if (rusiavimas == 1) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.var < b.var; });
+	else if (rusiavimas == 2) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.pav < b.pav; });
+	else if (rusiavimas == 3 && rezult == 1) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.gal > b.gal; });
+	else if (rusiavimas == 3 && rezult == 2) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.med > b.med; });
+	out << endl << left << setw(20) << "Pavarde" << setw(15) << "Vardas";
+	if (rezult == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
+	else if (rezult == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
+	out << "------------------------------------------------------------" << endl;
+	for (auto n :grupe) {
+		out << left << setw(20) << n.pav << setw(15) << n.var;
+		if (rezult == 1) out << setw(20) << fixed << setprecision(2) << n.gal << endl;
+		else if (rezult == 2) out << setw(20) << fixed << setprecision(2) << n.med << endl;
+	}
+}
+
+void File(vector<Studentas>& grupe, string file1, string file2) {
+	ifstream open(file1);
+	while (!open) {
         cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: " << endl;
         cin >> file1;
-		open_f.open(file1);
+		open.open(file1);
     }
 	string eil;
-	std::getline(open_f, eil);
-	while (std::getline(open_f, eil)) {
+	getline(open, eil);
+	while (getline(open, eil)) {
 		std::istringstream iss(eil);
 		Studentas laikinas;
 		iss >> laikinas.var >> laikinas.pav;
@@ -54,28 +75,20 @@ void bufer_file(vector<Studentas>& grupe, string file1, string file2) {
 		}
 		grupe.push_back(laikinas);
 	}
-	open_f.close();
-	Skaiciavimai(grupe);
-    
-
-	std::ofstream out_f(file2);
-	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
-	int rezult = skaicioTikrinimas(1, 2);
-	out_f << endl << std::left << std::setw(20) << "Pavarde" << std::setw(15) << "Vardas";
-	if (rezult == 1) out_f << std::setw(20) << "Galutinis (Vid.)" << endl;
-	else if (rezult == 2 ) out_f << std::setw(20) << "Galutinis (Med.)" << endl;
-	out_f << "------------------------------------------------------------" << endl;
-	for (auto n :grupe) {
-		out_f << std::left << std::setw(20) << n.pav << std::setw(15) << n.var;
-		if (rezult == 1) out_f << std::setw(20) << std::fixed << std::setprecision(2) << n.gal << endl;
-		else if (rezult == 2) out_f << std::setw(20) << std::fixed << std::setprecision(2) << n.med << endl;
-	}
-    out_f.close();
+	open.close();
+	Calculations(grupe);
+	ofstream out(file2);
+	Output(grupe, out);
+	out.close();
 	cout << "Duomenys nukopijuoti i faila: " << file2 << endl;
 	cout << endl;
 }
 
-
+void ProgramEnd() {
+	cout << "Paspauskite Enter, kad uzbaigtumete programos darba." << endl;
+	cin.ignore();
+	cin.get();
+}
 
 int main()
 {
@@ -89,21 +102,20 @@ int main()
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
 	cout << "4 - nauduoti duomenis is failo;" << endl;
 	cout << "5 - baigti darba." << endl;
-	int veiksmas = skaicioTikrinimas(1, 5);
+	int veiksmas = NumberCheck(1, 5);
 	if (veiksmas == 5) return 0;
 
 	if (veiksmas == 4) {
 		cout << "Iveskite failo pavadinima, is kurio bus nuskaitomi duomenys: ";
 		string failas;
 		cin >> failas;
-		bufer_file(grupe, failas, "rezultatas.txt");
-		system("pause");
+		File(grupe, failas, "rezultatas.txt");
+		ProgramEnd();
 		return 0;
 	}
 
-	//Ivedami studentu duomenis
 	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
-	int kiekStud = skaicioTikrinimas(0, maxStud);
+	int kiekStud = NumberCheck(0, maxStud);
 	bool skZinomas = true;
 	if (kiekStud == 0) {
 		skZinomas = false;
@@ -125,7 +137,7 @@ int main()
 
 		if (veiksmas == 1) {
 			cout << "Iveskite studento atliktu namu darbu kieki (iveskite 0, jei kiekis yra nezinomas): ";
-			int kiekPaz = skaicioTikrinimas(0, 100);
+			int kiekPaz = NumberCheck(0, 100);
 			bool pazZinomas = true;
 			if (kiekPaz == 0) {
 				pazZinomas = false;
@@ -134,7 +146,7 @@ int main()
 			if (pazZinomas == false) {
 				cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
 				while (true) {
-					int pazymys = skaicioTikrinimas(0, 10);
+					int pazymys = NumberCheck(0, 10);
 					if (pazymys == 0) break;
 					laikinas.paz.push_back(pazymys);
 				}
@@ -142,11 +154,11 @@ int main()
 			else {
 				cout << "Iveskite studento visus atliktu namu darbu rezultatus: ";
 				for (int j = 0; j < kiekPaz; j++)
-					laikinas.paz.push_back(skaicioTikrinimas(1, 10));
+					laikinas.paz.push_back(NumberCheck(1, 10));
 			}
 
 			cout << "Iveskite studento egzamino pazymi: ";
-			laikinas.egz = skaicioTikrinimas(1, 10);
+			laikinas.egz = NumberCheck(1, 10);
 			grupe.push_back(laikinas);
 			cout << "------------------------------------------------------------" << endl;
 		}
@@ -160,27 +172,12 @@ int main()
 
 		if (skZinomas == false) {
 			cout << "1 - ivesti dar vieno studento duomenis; 0 - baigti ivedima. ";
-			int arIvesti = skaicioTikrinimas(0, 1);
+			int arIvesti = NumberCheck(0, 1);
 			if (arIvesti == 0) break;
 		}
 	}
-
-	//Skaiciuojami galutiniai pazymiai
-	Skaiciavimai(grupe);
-
-	//Isvedami studentu duomenys
-	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
-	int rezult = skaicioTikrinimas(1, 2);
-	cout << endl << std::left << std::setw(20) << "Pavarde" << std::setw(15) << "Vardas";
-	if (rezult == 1) cout << std::setw(20) << "Galutinis (Vid.)" << endl;
-	else if (rezult == 2 ) cout << std::setw(20) << "Galutinis (Med.)" << endl;
-	cout << "------------------------------------------------------------" << endl;
-	for (auto n :grupe) {
-		cout << std::left << std::setw(20) << n.pav << std::setw(15) << n.var;
-		if (rezult == 1) cout << std::setw(20) << std::fixed << std::setprecision(2) << n.gal << endl;
-		else if (rezult == 2) cout << std::setw(20) << std::fixed << std::setprecision(2) << n.med << endl;
-	}
-	cout << endl;
-	system("pause");
+	Calculations(grupe);
+	Output(grupe, cout);
+	ProgramEnd();
 	return 0;
 }
