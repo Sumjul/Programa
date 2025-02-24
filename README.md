@@ -18,3 +18,17 @@
 
 - **Aprašymas**: Šis tyrimas vertina studentų duomenų formavimo ir rodymo efektyvumą.
 - **Rezultatai**: `std::setw` ir `std::fixed` naudojimas formavimui užtikrina tvarkingą išvestį, tačiau gali turėti nedidelį poveikį našumui. Šis poveikis yra nereikšmingas esamam duomenų rinkinio dydžiui.
+  
+### Tyrimas 4: Failų Skaitymo ir Rašymo Efektyvumas
+
+- **Aprašymas**: Šis tyrimas vertina didelių failų skaitymo ir rašymo greitį, naudojant anksčiau sugeneruotus failus kaip testavimo duomenis.
+- **Rezultatai**:
+  - **studentai10000.txt**:
+    - Skaitymas: Vidurkis 0.361797 sek.
+    - Rašymas: Vidurkis 0.038776 sek.
+  - **studentai100000.txt**:
+    - Skaitymas: Vidurkis 1.06354 sek.
+    - Rašymas: Vidurkis 0.61652 sek.
+  - **studentai1000000.txt**:
+    - Skaitymas: Vidurkis 6.80121 sek.
+    - Rašymas: Vidurkis 6.30337 sek.

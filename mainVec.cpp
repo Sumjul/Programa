@@ -1,4 +1,18 @@
 #include "global.h"
+class Timer {
+private:
+	using hrClock = std::chrono::high_resolution_clock;
+	using durationDouble = std::chrono::duration<double>;
+	std::chrono::time_point<hrClock> start;
+public:
+	Timer() : start { hrClock::now() } {}
+	void reset() {
+	start = hrClock::now();
+	}
+	double elapsed() const {
+	return durationDouble (hrClock::now() - start).count();
+	}
+};
 
 int NumberCheck (int min, int max) {
 	int skaicius;
@@ -36,6 +50,7 @@ void Output(vector <Studentas>& grupe, ostream &out) {
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
 	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini pazymi." << endl;
 	int rusiavimas = NumberCheck(1, 3);
+	Timer outputTime;
 	if (rusiavimas == 1) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.var < b.var; });
 	else if (rusiavimas == 2) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.pav < b.pav; });
 	else if (rusiavimas == 3 && rezult == 1) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.gal > b.gal; });
@@ -44,44 +59,55 @@ void Output(vector <Studentas>& grupe, ostream &out) {
 	if (rezult == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
 	else if (rezult == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
 	out << "------------------------------------------------------------" << endl;
-	for (auto n :grupe) {
+	for (auto& n :grupe) {
 		out << left << setw(20) << n.pav << setw(15) << n.var;
 		if (rezult == 1) out << setw(20) << fixed << setprecision(2) << n.gal << endl;
 		else if (rezult == 2) out << setw(20) << fixed << setprecision(2) << n.med << endl;
 	}
+	cout << "Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. ";
 }
 
-void File(vector<Studentas>& grupe, string file1, string file2) {
-	ifstream open(file1);
-	while (!open) {
-        cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: " << endl;
-        cin >> file1;
-		open.open(file1);
-    }
+void File(vector<Studentas>& grupe) {
+	string failas;
 	string eil;
-	getline(open, eil);
-	while (getline(open, eil)) {
-		std::istringstream iss(eil);
-		Studentas laikinas;
-		iss >> laikinas.var >> laikinas.pav;
-		int pazymys;
-		vector <int> pazymiai;
-		while (iss >> pazymys)
-			pazymiai.push_back(pazymys);
-		if(!pazymiai.empty()) {
-			laikinas.egz = pazymiai.back();
-			pazymiai.pop_back();
-			laikinas.paz = pazymiai;
+	bool fileLoaded = false;
+	while (!fileLoaded) {
+		cout << "Iveskite failo pavadinima, is kurio bus skaitomi duomenys: ";
+		cin >> failas;
+		Timer inputTime;
+		ifstream input(failas);
+		if (!input) {
+			cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: "<< endl;
 		}
-		grupe.push_back(laikinas);
-	}
-	open.close();
+		else {
+			fileLoaded = true;
+			getline(input, eil);
+			while (getline(input, eil)) {
+				std::istringstream iss(eil);
+				Studentas laikinas;
+				iss >> laikinas.var >> laikinas.pav;
+				int pazymys;
+				vector <int> pazymiai;
+				while (iss >> pazymys)
+					pazymiai.push_back(pazymys);
+				if(!pazymiai.empty()) {
+					laikinas.egz = pazymiai.back();
+					pazymiai.pop_back();
+					laikinas.paz = pazymiai;
+				}
+				grupe.push_back(laikinas);
+			}
+			input.close();
+			cout << "Rezultatu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
+		
+		}
+	}	
 	Calculations(grupe);
-	ofstream out(file2);
-	Output(grupe, out);
-	out.close();
-	cout << "Duomenys nukopijuoti i faila: " << file2 << endl;
-	cout << endl;
+	string writeName = "rezultatas.txt";
+	ofstream output(writeName);
+	Output(grupe, output);
+	output.close();
+	cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
 }
 
 void ProgramEnd() {
@@ -106,10 +132,7 @@ int main()
 	if (veiksmas == 5) return 0;
 
 	if (veiksmas == 4) {
-		cout << "Iveskite failo pavadinima, is kurio bus nuskaitomi duomenys: ";
-		string failas;
-		cin >> failas;
-		File(grupe, failas, "rezultatas.txt");
+		File(grupe);
 		ProgramEnd();
 		return 0;
 	}
