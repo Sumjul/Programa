@@ -30,5 +30,5 @@
     - Skaitymas: Vidurkis 1.06354 sek.
     - Rašymas: Vidurkis 0.61652 sek.
   - **studentai1000000.txt**:
-    - Skaitymas: Vidurkis 6.80121 sek.
-    - Rašymas: Vidurkis 6.30337 sek.
+    - Skaitymas: Vidurkis 4.80121 sek.
+    - Rašymas: Vidurkis 4.30337 sek.
