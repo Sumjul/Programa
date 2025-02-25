@@ -1,5 +1,5 @@
-#ifndef HEADERS_H
-#define HEADERS_H
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
 #include <iostream>
 #include <vector>
@@ -32,13 +32,12 @@ using std::sort;
 
 const int maxStud = 1000;
 struct Studentas {
-	string var = "Vardenis", pav = "Pavardenis";
-	vector <int> paz;
-	int* pazAr = new int[100];
-	int pazSk = 0;
-	int egz = 0;
-	double gal = 0;
-	double med = 0;
+	string name = "Vardenis", surname = "Pavardenis";
+	vector <int> marks;
+	int markCount = 0;
+	int egzam = 0;
+	double average = 0;
+	double median = 0;
 };
 
 #endif

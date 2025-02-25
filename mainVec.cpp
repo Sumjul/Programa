@@ -15,9 +15,9 @@ public:
 };
 
 int NumberCheck (int min, int max) {
-	int skaicius;
+	int number;
 	while (true) {
-		if (cin >> skaicius && skaicius >= min && skaicius <= max) {
+		if (cin >> number && number >= min && number <= max) {
 			break;
 		} else {
 			cin.clear();
@@ -25,49 +25,49 @@ int NumberCheck (int min, int max) {
 			cout << "Ivestis netinkama. Iveskite dar karta: ";
 		}
 	}
-	return skaicius;
+	return number;
 }
-void Calculations(vector <Studentas>& grupe) {
-	for (auto& n :grupe) {
+void Calculations(vector <Studentas>& group) {
+	for (auto& final :group) {
 		double sum = 0;
-		for (auto m :n.paz)
-			sum += m;
-		n.gal = 0.4 * (sum / n.paz.size()) + 0.6 * n.egz;
-		sort(n.paz.begin(), n.paz.end());
-		if (n.paz.empty()) {
-			n.med = 0;
+		for (auto temp :final.marks)
+			sum += temp;
+		final.average = 0.4 * (sum / final.marks.size()) + 0.6 * final.egzam;
+		sort(final.marks.begin(), final.marks.end());
+		if (final.marks.empty()) {
+			final.median = 0;
 			continue;
 		}
-		if (n.paz.size() % 2 == 0)
-			n.med = (n.paz[n.paz.size() / 2 - 1] + n.paz[n.paz.size() / 2]) / 2.0;
-		else n.med = n.paz[n.paz.size() / 2];
+		if (final.marks.size() % 2 == 0)
+			final.median = (final.marks[final.marks.size() / 2 - 1] + final.marks[final.marks.size() / 2]) / 2.0;
+		else final.median = final.marks[final.marks.size() / 2];
 	}
 }
 
-void Output(vector <Studentas>& grupe, ostream &out) {
+void Output(vector <Studentas>& group, ostream &out) {
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int rezult = NumberCheck(1, 2);
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
-	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini pazymi." << endl;
+	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini markymi." << endl;
 	int rusiavimas = NumberCheck(1, 3);
 	Timer outputTime;
-	if (rusiavimas == 1) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.var < b.var; });
-	else if (rusiavimas == 2) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.pav < b.pav; });
-	else if (rusiavimas == 3 && rezult == 1) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.gal > b.gal; });
-	else if (rusiavimas == 3 && rezult == 2) sort(grupe.begin(), grupe.end(), [](const Studentas &a, const Studentas &b) {return a.med > b.med; });
+	if (rusiavimas == 1) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.name < b.name; });
+	else if (rusiavimas == 2) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.surname < b.surname; });
+	else if (rusiavimas == 3 && rezult == 1) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.average > b.average; });
+	else if (rusiavimas == 3 && rezult == 2) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.median > b.median; });
 	out << endl << left << setw(20) << "Pavarde" << setw(15) << "Vardas";
 	if (rezult == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
 	else if (rezult == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
 	out << "------------------------------------------------------------" << endl;
-	for (auto& n :grupe) {
-		out << left << setw(20) << n.pav << setw(15) << n.var;
-		if (rezult == 1) out << setw(20) << fixed << setprecision(2) << n.gal << endl;
-		else if (rezult == 2) out << setw(20) << fixed << setprecision(2) << n.med << endl;
+	for (auto& final : group) {
+		out << left << setw(20) << final.surname << setw(15) << final.surname;
+		if (rezult == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
+		else if (rezult == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
 	cout << "Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. ";
 }
 
-void File(vector<Studentas>& grupe) {
+void File(vector<Studentas>& group) {
 	string failas;
 	string eil;
 	bool fileLoaded = false;
@@ -84,28 +84,28 @@ void File(vector<Studentas>& grupe) {
 			getline(input, eil);
 			while (getline(input, eil)) {
 				std::istringstream iss(eil);
-				Studentas laikinas;
-				iss >> laikinas.var >> laikinas.pav;
-				int pazymys;
-				vector <int> pazymiai;
-				while (iss >> pazymys)
-					pazymiai.push_back(pazymys);
-				if(!pazymiai.empty()) {
-					laikinas.egz = pazymiai.back();
-					pazymiai.pop_back();
-					laikinas.paz = pazymiai;
+				Studentas temp;
+				iss >> temp.name >> temp.surname;
+				int mark;
+				vector <int> markInput;
+				while (iss >> mark)
+					markInput.push_back(mark);
+				if(!markInput.empty()) {
+					temp.egzam = markInput.back();
+					markInput.pop_back();
+					temp.marks = markInput;
 				}
-				grupe.push_back(laikinas);
+				group.push_back(temp);
 			}
 			input.close();
 			cout << "Rezultatu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
 		
 		}
 	}	
-	Calculations(grupe);
+	Calculations(group);
 	string writeName = "rezultatas.txt";
 	ofstream output(writeName);
-	Output(grupe, output);
+	Output(group, output);
 	output.close();
 	cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
 }
@@ -118,89 +118,89 @@ void ProgramEnd() {
 
 int main()
 {
-	vector <string> vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
-	vector <string> pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
-	vector <Studentas> grupe;
+	vector <string> names = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
+	vector <string> surnames = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Marciulionis", "Baltrusaitis", "Grigonis", "Kairys", "Landsbergis", "Zemaitis", "Mikalauskas", "Butkus", "Vaiciulis", "Bagdonas", "Salkauskas", "Daukantas", "Jankauskas", "Tamulevicius", "Skvernelis", "Navickas", "Kupcinskas", "Simkus", "Masiulis", "Zukauskas", "Cepaitis", "Vaitkus", "Urbsys", "Brazys", "Aleksandravicius", "Daugela"};
+	vector <Studentas> group;
 	srand(time(NULL));
-	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
+	cout << "Sveiki atvyke i markymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
 	cout << "1 - pildyti duomenis rankiniu budu;" << endl;
 	cout << "2 - generuoti pazymius;" << endl;
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
 	cout << "4 - nauduoti duomenis is failo;" << endl;
 	cout << "5 - baigti darba." << endl;
-	int veiksmas = NumberCheck(1, 5);
-	if (veiksmas == 5) return 0;
+	int action = NumberCheck(1, 5);
+	if (action == 5) return 0;
 
-	if (veiksmas == 4) {
-		File(grupe);
+	if (action == 4) {
+		File(group);
 		ProgramEnd();
 		return 0;
 	}
 
 	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
-	int kiekStud = NumberCheck(0, maxStud);
-	bool skZinomas = true;
-	if (kiekStud == 0) {
-		skZinomas = false;
-		kiekStud = maxStud;
+	int amountStud = NumberCheck(0, maxStud);
+	bool amountStudKnown = true;
+	if (amountStud == 0) {
+		amountStudKnown = false;
+		amountStud = maxStud;
 	}
 
-	for (int i = 0; i < kiekStud; i++) {
-		Studentas laikinas;
-		if (veiksmas == 1 || veiksmas == 2) {
+	for (int i = 0; i < amountStud; i++) {
+		Studentas temp;
+		if (action == 1 || action == 2) {
 			cout << "Iveskite studento varda: ";
-			cin >> laikinas.var;
+			cin >> temp.name;
 			cout << "Iveskite studento pavarde: ";
-			cin >> laikinas.pav;
+			cin >> temp.surname;
 		}
-		else if (veiksmas == 3) {
-			laikinas.var = vardai[rand() % vardai.size()];
-			laikinas.pav = pavardes[rand() % pavardes.size()];
+		else if (action == 3) {
+			temp.name = names[rand() % names.size()];
+			temp.surname = surnames[rand() % surnames.size()];
 		}
 
-		if (veiksmas == 1) {
+		if (action == 1) {
 			cout << "Iveskite studento atliktu namu darbu kieki (iveskite 0, jei kiekis yra nezinomas): ";
-			int kiekPaz = NumberCheck(0, 100);
-			bool pazZinomas = true;
-			if (kiekPaz == 0) {
-				pazZinomas = false;
-				kiekPaz = 100;
+			int amountMarks = NumberCheck(0, 100);
+			bool amountMarksKnown = true;
+			if (amountMarks == 0) {
+				amountMarksKnown = false;
+				amountMarks = 100;
 			}
-			if (pazZinomas == false) {
+			if (amountMarksKnown == false) {
 				cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
 				while (true) {
-					int pazymys = NumberCheck(0, 10);
-					if (pazymys == 0) break;
-					laikinas.paz.push_back(pazymys);
+					int mark = NumberCheck(0, 10);
+					if (mark == 0) break;
+					temp.marks.push_back(mark);
 				}
 			}
 			else {
 				cout << "Iveskite studento visus atliktu namu darbu rezultatus: ";
-				for (int j = 0; j < kiekPaz; j++)
-					laikinas.paz.push_back(NumberCheck(1, 10));
+				for (int j = 0; j < amountMarks; j++)
+					temp.marks.push_back(NumberCheck(1, 10));
 			}
 
 			cout << "Iveskite studento egzamino pazymi: ";
-			laikinas.egz = NumberCheck(1, 10);
-			grupe.push_back(laikinas);
+			temp.egzam = NumberCheck(1, 10);
+			group.push_back(temp);
 			cout << "------------------------------------------------------------" << endl;
 		}
-		else if (veiksmas == 2 || veiksmas == 3) {
-			int kiekPaz = rand() % 100 + 1;
-			for (int j = 0; j < kiekPaz; j++)
-				laikinas.paz.push_back(rand() % 10 + 1);
-			laikinas.egz = rand() % 10 + 1;
-			grupe.push_back(laikinas);
+		else if (action == 2 || action == 3) {
+			int amountMarks = rand() % 100 + 1;
+			for (int j = 0; j < amountMarks; j++)
+				temp.marks.push_back(rand() % 10 + 1);
+			temp.egzam = rand() % 10 + 1;
+			group.push_back(temp);
 		}
 
-		if (skZinomas == false) {
+		if (amountStudKnown == false) {
 			cout << "1 - ivesti dar vieno studento duomenis; 0 - baigti ivedima. ";
-			int arIvesti = NumberCheck(0, 1);
-			if (arIvesti == 0) break;
+			int proceed = NumberCheck(0, 1);
+			if (proceed == 0) break;
 		}
 	}
-	Calculations(grupe);
-	Output(grupe, cout);
+	Calculations(group);
+	Output(group, cout);
 	ProgramEnd();
 	return 0;
 }
