@@ -7,7 +7,6 @@ const int maxStud = 1000;
 struct Studentas {
 	string name = "Vardenis", surname = "Pavardenis";
 	vector <int> marks;
-	int markCount = 0;
 	int egzam = 0;
 	double average = 0;
 	double median = 0;
@@ -28,4 +27,9 @@ class Timer {
         }
     };
 
+int NumberCheck (int min, int max);
+void Calculations(vector <Studentas>& group);
+void Output(vector <Studentas>& group, ostream &out);
+void File(vector<Studentas>& group);
+void ProgramEnd();
 #endif
