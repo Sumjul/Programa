@@ -1,16 +1,21 @@
 #include "global.h"
 #include "headers.h"
+#include "exceptions.h"
 
 // Function that checks if the input is a number and if it is within the specified range.
 int NumberCheck (int min, int max) {
 	int number;
 	while (true) {
+        try {
 		if (cin >> number && number >= min && number <= max)
 			break;
 		else {
+            throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta: ");
+        }
+        } catch (...) {
+            processException();
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			cout << "Ivestis netinkama. Iveskite dar karta: ";
 		}
 	}
 	return number;
