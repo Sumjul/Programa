@@ -1,6 +1,7 @@
 #include "global.h"
 #include "headers.h"
 
+// Function that checks if the input is a number and if it is within the specified range.
 int NumberCheck (int min, int max) {
 	int number;
 	while (true) {
@@ -15,6 +16,7 @@ int NumberCheck (int min, int max) {
 	return number;
 }
 
+// Function that asks the user to input data manually or generates it randomly.
 void Action(vector<Student>& group, int action) {
     cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
 	int amountStud = NumberCheck(0, maxStud);
@@ -66,6 +68,7 @@ void Action(vector<Student>& group, int action) {
 	}
 }
 
+// Function that calculates the average and median of the students' marks.
 void Calculations(vector<Student>& group) {
 	for (auto& final :group) {
 		double sum = 0;
@@ -83,6 +86,7 @@ void Calculations(vector<Student>& group) {
 	}
 }
 
+// Function that outputs the results to the console or a file.
 void Output(vector<Student>& group, ostream &out) {
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int markAction = NumberCheck(1, 2);
@@ -109,6 +113,7 @@ void Output(vector<Student>& group, ostream &out) {
 	cout << "Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. ";
 }
 
+// Function that reads data from a file.
 void File(vector<Student>& group) {
 	string readName;
 	string line;
@@ -153,6 +158,7 @@ void File(vector<Student>& group) {
 	cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
 }
 
+// Function that ends the program.
 void ProgramEnd() {
 	cout << "Paspauskite Enter, kad uzbaigtumete programos darba." << endl;
 	cin.ignore();

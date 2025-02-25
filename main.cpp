@@ -2,6 +2,7 @@
 #include "headers.h"
 #include "functions.cpp"
 
+// Main function that creates a vector of students and asks the user to choose an action.
 int main()
 {
 	vector<Student> group;
