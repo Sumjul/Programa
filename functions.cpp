@@ -10,7 +10,7 @@ int NumberCheck (int min, int max) {
 		if (cin >> number && number >= min && number <= max)
 			break;
 		else {
-            throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta: ");
+            throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta.");
         }
         } catch (...) {
             processException();
@@ -44,15 +44,26 @@ void Action(vector<Student>& group, int action) {
 
 		if (action == 1) {
 			cout << "Iveskite studento atliktu namu darbu kieki (iveskite 0, jei kiekis yra nezinomas): ";
-			int amountMarks = NumberCheck(0, 100);
-			if (amountMarks == 0) amountMarks = 100;
-			cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
-            while (amountMarks--) {
-                int mark = NumberCheck(0, 10);
-                if (mark == 0)
-                    break;
-                temp.marks.push_back(mark);
-            }
+			int kiekPaz = NumberCheck(0, 100);
+			bool pazZinomas = true;
+			if (kiekPaz == 0) {
+				pazZinomas = false;
+				kiekPaz = 100;
+			}
+			if (pazZinomas == false) {
+				cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
+				while (true) {
+					int pazymys = NumberCheck(0, 10);
+					if (pazymys == 0) break;
+					temp.marks.push_back(pazymys);
+				}
+			}
+			else {
+				cout << "Iveskite studento visus atliktu namu darbu rezultatus: ";
+				for (int j = 0; j < kiekPaz; j++)
+                temp.marks.push_back(NumberCheck(1, 10));
+			}
+
 			cout << "Iveskite studento egzamino pazymi: ";
 			temp.egzam = NumberCheck(1, 10);
 			group.push_back(temp);
@@ -96,7 +107,7 @@ void Output(vector<Student>& group, ostream &out) {
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int markAction = NumberCheck(1, 2);
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
-	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini markymi." << endl;
+	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini pazymi." << endl;
 	int sortAction = NumberCheck(1, 3);
 
 	Timer outputTime;
@@ -111,7 +122,7 @@ void Output(vector<Student>& group, ostream &out) {
 	else if (markAction == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
 	out << "------------------------------------------------------------" << endl;
 	for (auto& final : group) {
-		out << left << setw(20) << final.name << setw(15) << final.surname;
+		out << left << setw(20) << final.surname << setw(15) << final.name;
 		if (markAction == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
 		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
@@ -126,35 +137,37 @@ void File(vector<Student>& group) {
 	while (!fileLoaded) {
 		cout << "Iveskite failo pavadinima, is kurio bus skaitomi duomenys: ";
 		cin >> readName;
-		Timer inputTime;
-
-		ifstream input(readName);
-		if (!input) {
-			cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: "<< endl;
-		}
-		else {
-			fileLoaded = true;
-			getline(input, line);
-			while (getline(input, line)) {
-				istringstream iss(line);
-				Student temp;
-				iss >> temp.name >> temp.surname;
-				int mark;
-				vector<int> markInput;
-				while (iss >> mark)
-					markInput.push_back(mark);
-				if(!markInput.empty()) {
-					temp.egzam = markInput.back();
-					markInput.pop_back();
-					temp.marks = markInput;
-				}
-				group.push_back(temp);
-			}
-			input.close();
-			cout << "Rezultatu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
-		
-		}
-	}	
+        try {
+            Timer inputTime;
+            ifstream input(readName);
+            if (!input.is_open()) {
+                throw std::ios_base::failure("Failas nerastas arba negali buti atidarytas.");
+            }
+            fileLoaded = true;
+            getline(input, line);
+            while (getline(input, line)) {
+                istringstream iss(line);
+                Student temp;
+                iss >> temp.name >> temp.surname;
+                int mark;
+                vector<int> markInput;
+                while (iss >> mark)
+                    markInput.push_back(mark);
+                if(!markInput.empty()) {
+                    temp.egzam = markInput.back();
+                    markInput.pop_back();
+                    temp.marks = markInput;
+                }
+                group.push_back(temp);
+            }
+            input.close();
+            cout << "Rezultatu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
+        } catch (...) {
+            processException();
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }	
 	Calculations(group);
 	string writeName = "rezultatas.txt";
 	ofstream output(writeName);
@@ -166,6 +179,6 @@ void File(vector<Student>& group) {
 // Function that ends the program.
 void ProgramEnd() {
 	cout << "Paspauskite Enter, kad uzbaigtumete programos darba." << endl;
-	cin.ignore();
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cin.get();
 }

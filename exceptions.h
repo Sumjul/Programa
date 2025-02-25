@@ -23,32 +23,32 @@ void processException()
     }
     catch (const ios_base::failure &e)
     {
-        cerr << "Ivesties/isvesties išimtis: " << e.what() << endl;
+        cerr << "Ivesties/isvesties isimtis: (" << e.what() << ") " << endl;
         // You can add additional logging or actions if needed
     }
     catch (const system_error &e)
     {
-        cerr << "Sistemos išimtis: " << e.what() << endl;
+        cerr << "Sistemos isimtis: (" << e.what() << ") " << endl;
         // Additional handling for system errors
     }
     catch (const future_error &e)
     {
-        cerr << "Ateities užduoties išimtis: " << e.what() << endl;
+        cerr << "Ateities užduoties isimtis: (" << e.what() << ") " << endl;
         // Future error handling
     }
     catch (const bad_alloc &e)
     {
-        cerr << "Priskyrimo klaida (bad_alloc): " << e.what() << endl;
+        cerr << "Priskyrimo klaida (bad_alloc): (" << e.what() << ") " << endl;
         // Handling memory allocation errors
     }
     catch (const exception &e)
     {
-        cerr << "Klaida: " << e.what() << endl;
+        cerr << "Klaida: (" << e.what() << ") " << endl;
         // General exception handling
     }
     catch (...)
     {
-        cerr << "Nežinoma klaida." << endl;
+        cerr << "Nežinoma klaida. " << endl;
         // Catch any unknown exceptions
     }
 }
