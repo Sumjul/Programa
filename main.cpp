@@ -68,22 +68,22 @@ void Output(vector <Studentas>& group, ostream &out) {
 }
 
 void File(vector<Studentas>& group) {
-	string failas;
-	string eil;
+	string readName;
+	string line;
 	bool fileLoaded = false;
 	while (!fileLoaded) {
 		cout << "Iveskite failo pavadinima, is kurio bus skaitomi duomenys: ";
-		cin >> failas;
+		cin >> readName;
 		Timer inputTime;
-		ifstream input(failas);
+		ifstream input(readName);
 		if (!input) {
 			cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: "<< endl;
 		}
 		else {
 			fileLoaded = true;
-			getline(input, eil);
-			while (getline(input, eil)) {
-				std::istringstream iss(eil);
+			getline(input, line);
+			while (getline(input, line)) {
+				std::istringstream iss(line);
 				Studentas temp;
 				iss >> temp.name >> temp.surname;
 				int mark;
