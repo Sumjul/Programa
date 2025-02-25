@@ -14,7 +14,7 @@ int NumberCheck (int min, int max) {
 	}
 	return number;
 }
-void Calculations(vector <Studentas>& group) {
+void Calculations(vector <Student>& group) {
 	for (auto& final :group) {
 		double sum = 0;
 		for (auto temp :final.marks)
@@ -31,30 +31,30 @@ void Calculations(vector <Studentas>& group) {
 	}
 }
 
-void Output(vector <Studentas>& group, ostream &out) {
+void Output(vector <Student>& group, ostream &out) {
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int rezult = NumberCheck(1, 2);
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
 	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini markymi." << endl;
 	int rusiavimas = NumberCheck(1, 3);
 	Timer outputTime;
-	if (rusiavimas == 1) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.name < b.name; });
-	else if (rusiavimas == 2) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.surname < b.surname; });
-	else if (rusiavimas == 3 && rezult == 1) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.average > b.average; });
-	else if (rusiavimas == 3 && rezult == 2) sort(group.begin(), group.end(), [](const Studentas &a, const Studentas &b) {return a.median > b.median; });
+	if (rusiavimas == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.name < b.name; });
+	else if (rusiavimas == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.surname < b.surname; });
+	else if (rusiavimas == 3 && rezult == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.average > b.average; });
+	else if (rusiavimas == 3 && rezult == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.median > b.median; });
 	out << endl << left << setw(20) << "Pavarde" << setw(15) << "Vardas";
 	if (rezult == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
 	else if (rezult == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
 	out << "------------------------------------------------------------" << endl;
 	for (auto& final : group) {
-		out << left << setw(20) << final.surname << setw(15) << final.surname;
+		out << left << setw(20) << final.name << setw(15) << final.surname;
 		if (rezult == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
 		else if (rezult == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
 	cout << "Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. ";
 }
 
-void File(vector<Studentas>& group) {
+void File(vector<Student>& group) {
 	string readName;
 	string line;
 	bool fileLoaded = false;
@@ -71,7 +71,7 @@ void File(vector<Studentas>& group) {
 			getline(input, line);
 			while (getline(input, line)) {
 				std::istringstream iss(line);
-				Studentas temp;
+				Student temp;
 				iss >> temp.name >> temp.surname;
 				int mark;
 				vector <int> markInput;
