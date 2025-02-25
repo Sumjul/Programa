@@ -1,5 +1,4 @@
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -11,8 +10,6 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string_view>
 
 using std::cout;
@@ -29,5 +26,4 @@ using std::fixed;
 using std::setprecision;
 using std::string_view;
 using std::sort;
-
-#endif
+using std::istringstream;

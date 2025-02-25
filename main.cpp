@@ -14,13 +14,12 @@ int main()
 	cout << "5 - baigti darba." << endl;
 	int action = NumberCheck(1, 5);
 	if (action == 5) return 0;
-
-	if (action == 4) {
+	else if (action == 4) {
 		File(group);
 		ProgramEnd();
 		return 0;
 	}
-	Action(group, action);
+	else Action(group, action);
 	Calculations(group);
 	Output(group, cout);
 	ProgramEnd();

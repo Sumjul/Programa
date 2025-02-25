@@ -4,9 +4,9 @@
 int NumberCheck (int min, int max) {
 	int number;
 	while (true) {
-		if (cin >> number && number >= min && number <= max) {
+		if (cin >> number && number >= min && number <= max)
 			break;
-		} else {
+		else {
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			cout << "Ivestis netinkama. Iveskite dar karta: ";
@@ -18,11 +18,9 @@ int NumberCheck (int min, int max) {
 void Action(vector<Student>& group, int action) {
     cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): ";
 	int amountStud = NumberCheck(0, maxStud);
-	bool amountStudKnown = true;
-	if (amountStud == 0) {
-		amountStudKnown = false;
-		amountStud = maxStud;
-	}
+	bool amountStudKnown = (amountStud != 0);
+	if (!amountStudKnown)
+        amountStud = maxStud;
 
 	for (int i = 0; i < amountStud; i++) {
 		Student temp;
@@ -40,30 +38,18 @@ void Action(vector<Student>& group, int action) {
 		if (action == 1) {
 			cout << "Iveskite studento atliktu namu darbu kieki (iveskite 0, jei kiekis yra nezinomas): ";
 			int amountMarks = NumberCheck(0, 100);
-			bool amountMarksKnown = true;
-			if (amountMarks == 0) {
-				amountMarksKnown = false;
-				amountMarks = 100;
-			}
-			if (amountMarksKnown == false) {
-				cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
-				while (true) {
-					int mark = NumberCheck(0, 10);
-					if (mark == 0) break;
-					temp.marks.push_back(mark);
-				}
-			}
-			else {
-				cout << "Iveskite studento visus atliktu namu darbu rezultatus: ";
-				for (int j = 0; j < amountMarks; j++)
-					temp.marks.push_back(NumberCheck(1, 10));
-			}
-
+			if (amountMarks == 0) amountMarks = 100;
+			cout << "Iveskite studento visus atliktu namu darbu rezultatus (0 - baigti ivedima): ";
+            while (amountMarks--) {
+                int mark = NumberCheck(0, 10);
+                if (mark == 0)
+                    break;
+                temp.marks.push_back(mark);
+            }
 			cout << "Iveskite studento egzamino pazymi: ";
 			temp.egzam = NumberCheck(1, 10);
 			group.push_back(temp);
-			cout << "------------------------------------------------------------" << endl;
-		}
+    }
 		else if (action == 2 || action == 3) {
 			int amountMarks = rand() % 100 + 1;
 			for (int j = 0; j < amountMarks; j++)
@@ -74,12 +60,13 @@ void Action(vector<Student>& group, int action) {
 
 		if (!amountStudKnown) {
 			cout << "1 - ivesti dar vieno studento duomenis; 0 - baigti ivedima. ";
-			if (NumberCheck(0, 1) == 0) break;
+			if (NumberCheck(0, 1) == 0)
+                break;
 		}
 	}
 }
 
-void Calculations(vector <Student>& group) {
+void Calculations(vector<Student>& group) {
 	for (auto& final :group) {
 		double sum = 0;
 		for (auto temp :final.marks)
@@ -96,25 +83,28 @@ void Calculations(vector <Student>& group) {
 	}
 }
 
-void Output(vector <Student>& group, ostream &out) {
+void Output(vector<Student>& group, ostream &out) {
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
-	int rezult = NumberCheck(1, 2);
+	int markAction = NumberCheck(1, 2);
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
 	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini markymi." << endl;
-	int rusiavimas = NumberCheck(1, 3);
+	int sortAction = NumberCheck(1, 3);
+
 	Timer outputTime;
-	if (rusiavimas == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.name < b.name; });
-	else if (rusiavimas == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.surname < b.surname; });
-	else if (rusiavimas == 3 && rezult == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.average > b.average; });
-	else if (rusiavimas == 3 && rezult == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.median > b.median; });
+	if (sortAction == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.name < b.name; });
+	else if (sortAction == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.surname < b.surname; });
+	else if (sortAction == 3) {
+        if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average > b.average; });
+        else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median > b.median; });
+    }
 	out << endl << left << setw(20) << "Pavarde" << setw(15) << "Vardas";
-	if (rezult == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
-	else if (rezult == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
+	if (markAction == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
+	else if (markAction == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
 	out << "------------------------------------------------------------" << endl;
 	for (auto& final : group) {
 		out << left << setw(20) << final.name << setw(15) << final.surname;
-		if (rezult == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
-		else if (rezult == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
+		if (markAction == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
+		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
 	cout << "Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. ";
 }
@@ -127,6 +117,7 @@ void File(vector<Student>& group) {
 		cout << "Iveskite failo pavadinima, is kurio bus skaitomi duomenys: ";
 		cin >> readName;
 		Timer inputTime;
+
 		ifstream input(readName);
 		if (!input) {
 			cout << "Klaida: failas nerastas arba negali buti atidarytas. Iveskite failo pavadinima dar karta: "<< endl;
@@ -135,11 +126,11 @@ void File(vector<Student>& group) {
 			fileLoaded = true;
 			getline(input, line);
 			while (getline(input, line)) {
-				std::istringstream iss(line);
+				istringstream iss(line);
 				Student temp;
 				iss >> temp.name >> temp.surname;
 				int mark;
-				vector <int> markInput;
+				vector<int> markInput;
 				while (iss >> mark)
 					markInput.push_back(mark);
 				if(!markInput.empty()) {
