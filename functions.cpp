@@ -119,12 +119,12 @@ void Output(vector<Student>& group, ostream &out) {
         if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average > b.average; });
         else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median > b.median; });
     }
-	out << endl << left << setw(20) << "Pavarde" << setw(15) << "Vardas";
+	out << left << setw(20) << "Pavarde" << setw(20) << "Vardas";
 	if (markAction == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
 	else if (markAction == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
 	out << "------------------------------------------------------------" << endl;
 	for (auto& final : group) {
-		out << left << setw(20) << final.surname << setw(15) << final.name;
+		out << left << setw(20) << final.surname << setw(20) << final.name;
 		if (markAction == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
 		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
@@ -183,7 +183,7 @@ void Generate(vector<Student>& group) {
 	cout << "Iveskite studentu skaiciu, kuriu informacija norite sugeneruoti: ";
 	int amountStud = NumberCheck(1, maxStud);\
 	int amountMarks = rand() % 11 + 10;
-	for (int i=0; i<amountStud; i++) {
+	for (int i=1; i<=amountStud; i++) {
 		Student temp;
 		temp.name = "VardasNr" + std::to_string(i);	
 		temp.surname = "PavardeNr" + std::to_string(i);
@@ -196,15 +196,15 @@ void Generate(vector<Student>& group) {
 	string fout;
 	cin >> fout;
 	ofstream out(fout);
-	out << endl << left << setw(20) << "Pavarde" << setw(20) << "Vardas";
-	for (int i=0; i<amountMarks; i++)
-		out << left << setw(5) << ("ND" + std::to_string(i+1));
-	out << setw(5) << "Egz." << endl;
+	out << left << setw(20) << "Vardas" << setw(20) << "Pavarde";
+	for (int i=1; i<=amountMarks; i++)
+		out << left << setw(10) << ("ND" + std::to_string(i));
+	out << setw(10) << "Egz." << endl;
 	for (auto& final : group) {
-		out << left << setw(20) << final.surname << setw(20) << final.name;
+		out << left << setw(20) << final.name << setw(20) << final.surname;
 		for (auto mark : final.marks)
-			out << left << setw(5) << mark;
-		out << setw(5) << final.egzam << endl;
+			out << left << setw(10) << mark;
+		out << setw(10) << final.egzam << endl;
 	}
 	out.close();
 	cout << "Duomenys buvo sekmingai sukurti faile: " << fout << endl;
