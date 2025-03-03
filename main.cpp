@@ -19,7 +19,7 @@ int main()
 	int action = NumberCheck(1, 7);
 	if (action == 7) return 0;
 	else if (action == 4) {
-		File(group);
+		InputFile(group, action);
 		ProgramEnd();
 		return 0;
 	}
@@ -29,7 +29,7 @@ int main()
 		return 0;
 	}
 	else if (action == 6) {
-		File(group);
+		InputFile(group, action);
 		vector<Student> passed, failed;
 		SortStudents(group, passed, failed);
 		OutputSorted(passed, failed);

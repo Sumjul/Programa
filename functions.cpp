@@ -132,7 +132,7 @@ void Output(vector<Student>& group, ostream &out) {
 }
 
 // Function that reads data from a file.
-void File(vector<Student>& group) {
+void InputFile(vector<Student>& group, int action) {
 	string readName;
 	string line;
 	bool fileLoaded = false;
@@ -171,11 +171,13 @@ void File(vector<Student>& group) {
         }
     }	
 	Calculations(group);
-	string writeName = "rezultatas.txt";
-	ofstream output(writeName);
-	Output(group, output);
-	output.close();
-	cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
+	if (action != 6) {
+		string writeName = "rezultatas.txt";
+		ofstream output(writeName);
+		Output(group, output);
+		output.close();
+		cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
+	}
 }
 
 // Function that generates data and writes it to a file.
@@ -220,14 +222,16 @@ void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Stude
 	}
 }
 
+// Function that outputs the sorted students to two files.
 void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
 	ofstream passedOut("kietiakai.txt");
 	ofstream failedOut("vargsiukai.txt");
 	Output(passed, passedOut);
-	Output(failed, failedOut);
 	passedOut.close();
+	cout << "Kietiakai surasyti i faila: kietiakai.txt." << endl;
+	Output(failed, failedOut);
 	failedOut.close();
-	cout << "Studentai surusiuoti i failus: kietiakai.txt ir vargsiukai.txt." << endl;
+	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
 }
 
 // Function that ends the program.
