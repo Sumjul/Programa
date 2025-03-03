@@ -14,9 +14,10 @@ int main()
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
 	cout << "4 - nauduoti duomenis is failo;" << endl;
 	cout << "5 - sugeneruoti duomenis ir isvesti i faila;" << endl;
-	cout << "6 - baigti darba." << endl;
-	int action = NumberCheck(1, 6);
-	if (action == 6) return 0;
+	cout << "6 - surusiuoti studentus i 2 failus" << endl;
+	cout << "7 - baigti darba." << endl;
+	int action = NumberCheck(1, 7);
+	if (action == 7) return 0;
 	else if (action == 4) {
 		File(group);
 		ProgramEnd();
@@ -24,6 +25,14 @@ int main()
 	}
 	else if (action == 5) {	
 		Generate(group);
+		ProgramEnd();
+		return 0;
+	}
+	else if (action == 6) {
+		File(group);
+		vector<Student> passed, failed;
+		SortStudents(group, passed, failed);
+		OutputSorted(passed, failed);
 		ProgramEnd();
 		return 0;
 	}

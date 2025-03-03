@@ -33,6 +33,8 @@ void Action(vector<Student>& group, int action);
 void Calculations(vector<Student>& group);
 void Output(vector<Student>& group, ostream &out);
 void File(vector<Student>& group);
+void Generate(vector<Student>& group);
+void processException();
 void ProgramEnd();
 
 // Global variables that hold names and surnames.

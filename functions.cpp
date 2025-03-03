@@ -163,7 +163,7 @@ void File(vector<Student>& group) {
                 group.push_back(temp);
             }
             input.close();
-            cout << "Rezultatu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
+            cout << "Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
         } catch (...) {
             processException();
             cin.clear();
@@ -210,6 +210,24 @@ void Generate(vector<Student>& group) {
 	out.close();
 	cout << "Duomenys buvo sekmingai sukurti faile: " << fout << endl;
 	cout << "Duomenu generavimas uztruko: " << generateTime.elapsed() << " sekundziu. " << endl;
+}
+
+// Function that sorts students into two groups - those who passed and those who failed.
+void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
+	for (auto& final : group) {
+		if (final.average >= 5) passed.push_back(final);
+		else failed.push_back(final);
+	}
+}
+
+void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
+	ofstream passedOut("kietiakai.txt");
+	ofstream failedOut("vargsiukai.txt");
+	Output(passed, passedOut);
+	Output(failed, failedOut);
+	passedOut.close();
+	failedOut.close();
+	cout << "Studentai surusiuoti i failus: kietiakai.txt ir vargsiukai.txt." << endl;
 }
 
 // Function that ends the program.
