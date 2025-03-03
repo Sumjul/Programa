@@ -8,6 +8,8 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "-O3",
+                "-Ofast",
+                "-funroll-loops",
                 "-std=c++20",
                 "${file}",
                 "-o",

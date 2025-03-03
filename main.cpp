@@ -6,8 +6,9 @@
 int main()
 {
 	vector<Student> group;
+	group.reserve(maxStud);	
 	srand(time(NULL));
-	cout << "Sveiki atvyke i markymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
+	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
 	cout << "1 - pildyti duomenis rankiniu budu;" << endl;
 	cout << "2 - generuoti pazymius;" << endl;
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;

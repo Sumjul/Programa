@@ -104,6 +104,8 @@ void Calculations(vector<Student>& group) {
 
 // Function that outputs the results to the console or a file.
 void Output(vector<Student>& group, ostream &out) {
+	group.shrink_to_fit();
+	cout << "Pasirinkite rezultatu isvedimo metoda: " << endl;
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
 	int markAction = NumberCheck(1, 2);
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
