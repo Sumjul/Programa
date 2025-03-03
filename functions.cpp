@@ -180,8 +180,12 @@ void File(vector<Student>& group) {
 
 // Function that generates data and writes it to a file.
 void Generate(vector<Student>& group) {
+	cout << "Iveskite failo pavadinima, i kuri bus irasyti duomenys: ";
+	string fout;
+	cin >> fout;
 	cout << "Iveskite studentu skaiciu, kuriu informacija norite sugeneruoti: ";
-	int amountStud = NumberCheck(1, maxStud);\
+	int amountStud = NumberCheck(1, maxStud);
+	Timer generateTime;
 	int amountMarks = rand() % 11 + 10;
 	for (int i=1; i<=amountStud; i++) {
 		Student temp;
@@ -192,9 +196,6 @@ void Generate(vector<Student>& group) {
 		temp.egzam = rand() % 10 + 1;
 		group.push_back(temp);
 	}
-	cout << "Iveskite failo pavadinima, i kuri bus irasyti duomenys: ";
-	string fout;
-	cin >> fout;
 	ofstream out(fout);
 	out << left << setw(20) << "Vardas" << setw(20) << "Pavarde";
 	for (int i=1; i<=amountMarks; i++)
@@ -208,6 +209,7 @@ void Generate(vector<Student>& group) {
 	}
 	out.close();
 	cout << "Duomenys buvo sekmingai sukurti faile: " << fout << endl;
+	cout << "Duomenu generavimas uztruko: " << generateTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that ends the program.
