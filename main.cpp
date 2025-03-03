@@ -23,24 +23,7 @@ int main()
 		return 0;
 	}
 	else if (action == 5) {	
-		cout << "Iveskite skaiciu kiek sugeneruoti studentu: ";
-		int amountStud = NumberCheck(1, maxStud);
-		for (int i=0; i<amountStud; i++) {
-			Student temp;
-			temp.name = "VardasNr" + std::to_string(i);	
-			temp.surname = "PavardeNr" + std::to_string(i);
-			int amountMarks = rand() % 100 + 1;
-			for (int j=0; j<amountMarks; j++)
-				temp.marks.push_back(rand() % 10 + 1);
-			temp.egzam = rand() % 10 + 1;
-			group.push_back(temp);
-		}
-		cout << "Iveskite failo pavadinima, i kuri bus irasyti duomenys: ";
-		string out;
-		cin >> out;
-		ofstream fout(out);
-		Calculations(group);
-		Output(group, fout);
+		Generate(group);
 		ProgramEnd();
 		return 0;
 	}
