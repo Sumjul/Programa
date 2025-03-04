@@ -1,34 +1,52 @@
-# Programa
+# Efektyvumo Tyrimai (v0.4)
 
-## Efektyvumo Tyrimai
+Šiame skyriuje pateikiami išsamūs našumo testų rezultatai, susiję su duomenų failų generavimu, nuskaitymu, rūšiavimu ir išvedimu.
+[Testų ekrano nuotraukų aplankalas](../programa/performance_tests)
 
-Šiame skyriuje pateikiami išsamūs aprašymai ir komentarai apie įvairius efektyvumo tyrimus, atliktus šiame repozitoriume.
+## 1. Failų generavimas
 
-### Tyrimas 1: Įvesties Tikrinimo Efektyvumas
+| Failas            | Sukūrimo laikas (s) |
+|------------------|-----------------|
+| `st1000.txt`     | 0.0101944       |
+| `st10000.txt`    | 0.0466155       |
+| `st100000.txt`   | 0.553198        |
+| `st1000000.txt`  | 4.72237         |
+| `st10000000.txt` | 56.8465         |
 
-- **Aprašymas**: Šis tyrimas nagrinėja įvesties tikrinimo funkcijos `skaicioTikrinimas` efektyvumą.
-- **Rezultatai**: Funkcija naudoja ciklą, kad pakartotinai prašytų vartotojo įvesties, kol bus pateikta tinkama reikšmė. Tai užtikrina patikimumą, tačiau gali sukelti vėlavimus, jei vartotojas kelis kartus įveda netinkamus duomenis.
+---
 
-### Tyrimas 2: Duomenų Apdorojimo Efektyvumas
+## 2. Duomenų apdorojimas
 
-- **Aprašymas**: Šis tyrimas nagrinėja studentų duomenų apdorojimo efektyvumą, įskaitant galutinių pažymių ir medianų skaičiavimą.
-- **Rezultatai**: `std::sort` naudojimas medianos skaičiavimui yra efektyvus mažiems duomenų rinkiniams, tačiau gali prireikti optimizacijos didesniems rinkiniams. Galutinio pažymio skaičiavimas yra tiesioginis ir efektyvus.
+### 2.1. Duomenų nuskaitymas iš failo
 
-### Tyrimas 3: Išvesties Formavimo Efektyvumas
+| Failas            | Nuskaitymo laikas (s) |
+|------------------|------------------|
+| `st1000.txt`     | 0.027287         |
+| `st10000.txt`    | 0.0723405        |
+| `st100000.txt`   | 0.866603         |
+| `st1000000.txt`  | 4.49162          |
+| `st10000000.txt` | 62.7062          |
 
-- **Aprašymas**: Šis tyrimas vertina studentų duomenų formavimo ir rodymo efektyvumą.
-- **Rezultatai**: `std::setw` ir `std::fixed` naudojimas formavimui užtikrina tvarkingą išvestį, tačiau gali turėti nedidelį poveikį našumui. Šis poveikis yra nereikšmingas esamam duomenų rinkinio dydžiui.
-  
-### Tyrimas 4: Failų Skaitymo ir Rašymo Efektyvumas
+### 2.2. Studentų rūšiavimas į dvi grupes
 
-- **Aprašymas**: Šis tyrimas vertina didelių failų skaitymo ir rašymo greitį, naudojant anksčiau sugeneruotus failus kaip testavimo duomenis.
-- **Rezultatai**:
-  - **studentai10000.txt**:
-    - Skaitymas: Vidurkis 0.361797 sek.
-    - Rašymas: Vidurkis 0.038776 sek.
-  - **studentai100000.txt**:
-    - Skaitymas: Vidurkis 1.06354 sek.
-    - Rašymas: Vidurkis 0.61652 sek.
-  - **studentai1000000.txt**:
-    - Skaitymas: Vidurkis 4.80121 sek.
-    - Rašymas: Vidurkis 4.30337 sek.
+| Failas            | Rūšiavimo laikas (s) |
+|------------------|------------------|
+| `st1000.txt`     | 0.0018859        |
+| `st10000.txt`    | 0.165601         |
+| `st100000.txt`   | 1.23176          |
+| `st1000000.txt`  | 2.14116          |
+| `st10000000.txt` | 10.2318          |
+
+### 2.3. Surūšiuotų studentų išvedimas į du failus
+
+| Failas            | Išvedimo laikas (s) |
+|------------------|------------------|
+| `st1000.txt`     | 0.0131835        |
+| `st10000.txt`    | 0.0620217        |
+| `st100000.txt`   | 0.315976         |
+| `st1000000.txt`  | 1.26934          |
+| `st10000000.txt` | 41.999           |
+
+---
+
+**Pastaba:** Testai buvo atlikti naudojant šios versijos optimizacijas, siekiant įvertinti našumą skirtingo dydžio duomenų failuose.

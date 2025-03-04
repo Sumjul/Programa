@@ -7,7 +7,7 @@ int main()
 {
 	Timer totalTime;
 	vector<Student> group;
-	group.reserve(maxStud);	
+	group.reserve(maxStud);
 	srand(time(NULL));
 	Menu();
 	int action = NumberCheck(0, 6);

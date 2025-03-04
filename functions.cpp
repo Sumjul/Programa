@@ -133,7 +133,7 @@ void Output(vector<Student>& group, ostream &out, int markAction) {
 		if (markAction == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
 		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
-	cout << "Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. " << endl;
+	cout << " * Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that reads data from a file.
@@ -168,7 +168,7 @@ void InputFile(vector<Student>& group, int action) {
                 group.push_back(temp);
             }
             input.close();
-            cout << "Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
+            cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
         } catch (...) {
             processException();
             cin.clear();
@@ -218,7 +218,7 @@ void Generate(vector<Student>& group) {
 	}
 	out.close();
 	cout << "Duomenys buvo sekmingai sukurti faile: " << fout << endl;
-	cout << "Duomenu generavimas uztruko: " << generateTime.elapsed() << " sekundziu. " << endl;
+	cout << " * Duomenu generavimas uztruko: " << generateTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that sorts students into two groups - those who passed and those who failed.
@@ -228,7 +228,7 @@ void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Stude
 		if (final.average >= 5) passed.push_back(final);
 		else failed.push_back(final);
 	}
-	cout << "Studentu rusiavimas i 2 kategorijas uztruko: " << sortTime.elapsed() << " sekundziu. " << endl;
+	cout << " * Studentu rusiavimas i 2 kategorijas uztruko: " << sortTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that outputs the sorted students to two files.
@@ -249,7 +249,7 @@ void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
 	failedOutTime.elapsed();
 	double time2 = failedOutTime.elapsed();
 	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
-	cout << "Rezultatu isvedimas i 2 failus uztruko: " << time1 + time2 << " sekundziu. " << endl;
+	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << time1 + time2 << " sekundziu. " << endl;
 }
 
 void Menu(){
@@ -261,13 +261,13 @@ void Menu(){
 	cout << "3 - generuoti pazymius, vardus ir pavardes;" << endl;
 	cout << "4 - nauduoti duomenis is failo;" << endl;
 	cout << "5 - sugeneruoti duomenis ir isvesti i faila;" << endl;
-	cout << "6 - surusiuoti studentus i 2 failus.s" << endl;
+	cout << "6 - surusiuoti studentus i 2 failus." << endl;
 	cout << "--------------------------------------------" << endl;
 }
 
 // Function that ends the program.
 void ProgramEnd(Timer totalTime) {
-	cout << "Programa veike: " << totalTime.elapsed() << " sekundziu. " << endl;
+	cout << " * Programa veike: " << totalTime.elapsed() << " sekundziu. " << endl;
 	cout << "Aciu, kad naudojates pazymiu skaiciuokle!" << endl;
 	cout << "Paspauskite Enter, kad uzbaigtumete programos darba." << endl;
 	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
