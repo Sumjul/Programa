@@ -102,23 +102,26 @@ void Calculations(vector<Student>& group) {
 	}
 }
 
-// Function that outputs the results to the console or a file.
-void Output(vector<Student>& group, ostream &out) {
+void Sort (vector<Student>& group, int& markAction) {
 	group.shrink_to_fit();
 	cout << "Pasirinkite rezultatu isvedimo metoda: " << endl;
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. ";
-	int markAction = NumberCheck(1, 2);
+	markAction = NumberCheck(1, 2);
 	cout << "Pairinkite rezultatu rusiavimo metoda: " << endl;
 	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini pazymi." << endl;
 	int sortAction = NumberCheck(1, 3);
 
-	Timer outputTime;
 	if (sortAction == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.name < b.name; });
 	else if (sortAction == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.surname < b.surname; });
 	else if (sortAction == 3) {
         if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average > b.average; });
         else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median > b.median; });
     }
+}
+
+// Function that outputs the results to the console or a file.
+void Output(vector<Student>& group, ostream &out, int markAction) {
+	Timer outputTime;
 	out << left << setw(20) << "Pavarde" << setw(20) << "Vardas";
 	if (markAction == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
 	else if (markAction == 2 ) out << setw(20) << "Galutinis (Med.)" << endl;
@@ -174,7 +177,9 @@ void InputFile(vector<Student>& group, int action) {
 	if (action != 6) {
 		string writeName = "rezultatas.txt";
 		ofstream output(writeName);
-		Output(group, output);
+		int markAction;
+		Sort(group, markAction);
+		Output(group, output, markAction);
 		output.close();
 		cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
 	}
@@ -216,22 +221,28 @@ void Generate(vector<Student>& group) {
 
 // Function that sorts students into two groups - those who passed and those who failed.
 void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
+	Timer sortTime;
 	for (auto& final : group) {
 		if (final.average >= 5) passed.push_back(final);
 		else failed.push_back(final);
 	}
+	cout << "Studentu rusiavimas i 2 kategorijas uztruko: " << sortTime.elapsed() << " sekundziu. ";
 }
 
 // Function that outputs the sorted students to two files.
 void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
+	int markAction;
+	Sort(passed, markAction);
+	Timer outputTime;
 	ofstream passedOut("kietiakai.txt");
 	ofstream failedOut("vargsiukai.txt");
-	Output(passed, passedOut);
+	Output(passed, passedOut, markAction);
 	passedOut.close();
 	cout << "Kietiakai surasyti i faila: kietiakai.txt." << endl;
-	Output(failed, failedOut);
+	Output(failed, failedOut, markAction);
 	failedOut.close();
 	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
+	cout << "Rezultatu isvedimas i 2 failus uztruko: " << outputTime.elapsed() << " sekundziu. ";
 }
 
 // Function that ends the program.

@@ -38,7 +38,9 @@ int main()
 	}
 	else Action(group, action);
 	Calculations(group);
-	Output(group, cout);
+	int markAction;
+	Sort(group, markAction);
+	Output(group, cout, markAction);
 	ProgramEnd();
 	return 0;
 }
