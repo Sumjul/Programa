@@ -25,6 +25,8 @@ int main()
 	else if (action == 6) {
 		InputFile(group, action);
 		vector<Student> passed, failed;
+		passed.reserve(maxStud);
+		failed.reserve(maxStud);
 		SortStudents(group, passed, failed);
 		OutputSorted(passed, failed);
 		ProgramEnd(totalTime);

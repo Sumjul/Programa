@@ -1,4 +1,5 @@
 #pragma once
+#include <omp.h>
 
 const int maxStud = 10000000;
 // Structure that holds student data.

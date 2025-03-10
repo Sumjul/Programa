@@ -86,6 +86,7 @@ void Action(vector<Student>& group, int action) {
 
 // Function that calculates the average and median of the students' marks.
 void Calculations(vector<Student>& group) {
+	#pragma omp parallel for schedule(static, 8)
 	for (auto& final :group) {
 		double sum = 0;
 		for (auto temp :final.marks)
@@ -196,6 +197,7 @@ void Generate(vector<Student>& group) {
 	int amountStud = NumberCheck(1, maxStud);
 	Timer generateTime;
 	int amountMarks = rand() % 11 + 10;
+	#pragma omp parallel for schedule(static, 8)
 	for (int i=1; i<=amountStud; i++) {
 		Student temp;
 		temp.name = "VardasNr" + std::to_string(i);	
@@ -203,6 +205,7 @@ void Generate(vector<Student>& group) {
 		for (int j=0; j<amountMarks; j++)
 			temp.marks.push_back(rand() % 10 + 1);
 		temp.egzam = rand() % 10 + 1;
+		#pragma omp critical
 		group.push_back(temp);
 	}
 	ofstream out(fout);
@@ -224,6 +227,7 @@ void Generate(vector<Student>& group) {
 // Function that sorts students into two groups - those who passed and those who failed.
 void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
 	Timer sortTime;
+	#pragma omp parallel for schedule(static, 100)
 	for (auto& final : group) {
 		if (final.average >= 5) passed.push_back(final);
 		else failed.push_back(final);
@@ -246,7 +250,6 @@ void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
 	ofstream failedOut("vargsiukai.txt");
 	Output(failed, failedOut, markAction);
 	failedOut.close();
-	failedOutTime.elapsed();
 	double time2 = failedOutTime.elapsed();
 	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
 	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << time1 + time2 << " sekundziu. " << endl;
