@@ -1,19 +1,19 @@
 #include "global.h"
 #include "headers.h"
-#include "exceptions.h"
 
+double globalTime = 0;
 // Function that checks if the input is a number and if it is within the specified range.
 int NumberCheck (int min, int max) {
 	int number;
 	while (true) {
-        try {
+		try {
 		if (cin >> number && number >= min && number <= max)
 			break;
 		else {
-            throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta:");
-        }
-        } catch (...) {
-            processException();
+			throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta:");
+		}
+		} catch (...) {
+			processException();
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
@@ -23,11 +23,11 @@ int NumberCheck (int min, int max) {
 
 // Function that asks the user to input data manually or generates it randomly.
 void Action(vector<Student>& group, int action) {
-    cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): " << endl;
+	cout << "Iveskite studentu skaiciu (iveskite 0, jei skaicius yra nezinomas): " << endl;
 	int amountStud = NumberCheck(0, maxStud);
 	bool amountStudKnown = (amountStud != 0);
 	if (!amountStudKnown)
-        amountStud = maxStud;
+		amountStud = maxStud;
 
 	for (int i = 0; i < amountStud; i++) {
 		Student temp;
@@ -61,13 +61,13 @@ void Action(vector<Student>& group, int action) {
 			else {
 				cout << "Iveskite studento visus atliktu namu darbu rezultatus: " << endl;
 				for (int j = 0; j < kiekPaz; j++)
-                temp.marks.push_back(NumberCheck(1, 10));
+				temp.marks.push_back(NumberCheck(1, 10));
 			}
 
 			cout << "Iveskite studento egzamino pazymi: " << endl;
 			temp.egzam = NumberCheck(1, 10);
 			group.push_back(temp);
-    }
+	}
 		else if (action == 2 || action == 3) {
 			int amountMarks = rand() % 100 + 1;
 			for (int j = 0; j < amountMarks; j++)
@@ -79,14 +79,13 @@ void Action(vector<Student>& group, int action) {
 		if (!amountStudKnown) {
 			cout << "1 - ivesti dar vieno studento duomenis; 0 - baigti ivedima. "	<< endl;
 			if (NumberCheck(0, 1) == 0)
-                break;
+				break;
 		}
 	}
 }
 
 // Function that calculates the average and median of the students' marks.
 void Calculations(vector<Student>& group) {
-	#pragma omp parallel for schedule(static, 8)
 	for (auto& final :group) {
 		double sum = 0;
 		for (auto temp :final.marks)
@@ -106,7 +105,6 @@ void Calculations(vector<Student>& group) {
 
 // Function that sorts the students by name, surname or final mark.
 void Sort(vector<Student>& group, int& markAction) {
-	group.shrink_to_fit();
 	cout << "Pasirinkite rezultatu isvedimo metoda: " << endl;
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. " << endl;
 	markAction = NumberCheck(1, 2);
@@ -117,9 +115,9 @@ void Sort(vector<Student>& group, int& markAction) {
 	if (sortAction == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.name < b.name; });
 	else if (sortAction == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.surname < b.surname; });
 	else if (sortAction == 3) {
-        if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average > b.average; });
-        else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median > b.median; });
-    }
+		if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average > b.average; });
+		else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median > b.median; });
+	}
 }
 
 // Function that outputs the results to the console or a file.
@@ -135,6 +133,7 @@ void Output(vector<Student>& group, ostream &out, int markAction) {
 		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
 	cout << " * Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. " << endl;
+	globalTime += outputTime.elapsed();
 }
 
 // Function that reads data from a file.
@@ -145,37 +144,38 @@ void InputFile(vector<Student>& group, int action) {
 	while (!fileLoaded) {
 		cout << "Iveskite failo pavadinima, is kurio bus skaitomi duomenys: " << endl;
 		cin >> readName;
-        try {
-            Timer inputTime;
-            ifstream input(readName);
-            if (!input.is_open()) {
-                throw std::ios_base::failure("Failas nerastas arba negali buti atidarytas.");
-            }
-            fileLoaded = true;
-            getline(input, line);
-            while (getline(input, line)) {
-                istringstream iss(line);
-                Student temp;
-                iss >> temp.name >> temp.surname;
-                int mark;
-                vector<int> markInput;
-                while (iss >> mark)
-                    markInput.push_back(mark);
-                if(!markInput.empty()) {
-                    temp.egzam = markInput.back();
-                    markInput.pop_back();
-                    temp.marks = markInput;
-                }
-                group.push_back(temp);
-            }
-            input.close();
-            cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
-        } catch (...) {
-            processException();
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-    }	
+		try {
+			Timer inputTime;
+			ifstream input(readName);
+			if (!input.is_open()) {
+				throw std::ios_base::failure("Failas nerastas arba negali buti atidarytas.");
+			}
+			fileLoaded = true;
+			getline(input, line);
+			while (getline(input, line)) {
+				istringstream iss(line);
+				Student temp;
+				iss >> temp.name >> temp.surname;
+				int mark;
+				vector<int> markInput;
+				while (iss >> mark)
+					markInput.push_back(mark);
+				if(!markInput.empty()) {
+					temp.egzam = markInput.back();
+					markInput.pop_back();
+					temp.marks = markInput;
+				}
+				group.push_back(temp);
+			}
+			input.close();
+			cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
+			globalTime += inputTime.elapsed();
+		} catch (...) {
+			processException();
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+	}	
 	Calculations(group);
 	if (action != 6) {
 		string writeName = "rezultatas.txt";
@@ -197,7 +197,6 @@ void Generate(vector<Student>& group) {
 	int amountStud = NumberCheck(1, maxStud);
 	Timer generateTime;
 	int amountMarks = rand() % 11 + 10;
-	#pragma omp parallel for schedule(static, 8)
 	for (int i=1; i<=amountStud; i++) {
 		Student temp;
 		temp.name = "VardasNr" + std::to_string(i);	
@@ -205,7 +204,6 @@ void Generate(vector<Student>& group) {
 		for (int j=0; j<amountMarks; j++)
 			temp.marks.push_back(rand() % 10 + 1);
 		temp.egzam = rand() % 10 + 1;
-		#pragma omp critical
 		group.push_back(temp);
 	}
 	ofstream out(fout);
@@ -222,17 +220,19 @@ void Generate(vector<Student>& group) {
 	out.close();
 	cout << "Duomenys buvo sekmingai sukurti faile: " << fout << endl;
 	cout << " * Duomenu generavimas uztruko: " << generateTime.elapsed() << " sekundziu. " << endl;
+	globalTime += generateTime.elapsed();
 }
 
 // Function that sorts students into two groups - those who passed and those who failed.
 void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
 	Timer sortTime;
-	#pragma omp parallel for schedule(static, 100)
+	
 	for (auto& final : group) {
 		if (final.average >= 5) passed.push_back(final);
 		else failed.push_back(final);
 	}
 	cout << " * Studentu rusiavimas i 2 kategorijas uztruko: " << sortTime.elapsed() << " sekundziu. " << endl;
+	globalTime += sortTime.elapsed();
 }
 
 // Function that outputs the sorted students to two files.
@@ -253,6 +253,7 @@ void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
 	double time2 = failedOutTime.elapsed();
 	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
 	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << time1 + time2 << " sekundziu. " << endl;
+	globalTime += time1 + time2;
 }
 
 void Menu(){
@@ -269,10 +270,48 @@ void Menu(){
 }
 
 // Function that ends the program.
-void ProgramEnd(Timer totalTime) {
-	cout << " * Programa veike: " << totalTime.elapsed() << " sekundziu. " << endl;
+void ProgramEnd() {
+	cout << " * Programa veike: " << globalTime << " sekundziu. " << endl;
 	cout << "Aciu, kad naudojates pazymiu skaiciuokle!" << endl;
 	cout << "Paspauskite Enter, kad uzbaigtumete programos darba." << endl;
 	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cin.get();
+}
+
+void processException()
+{
+	try
+	{
+		throw; // Rethrow the exception to be caught here
+	}
+	catch (const ios_base::failure &e)
+	{
+		cerr << "Ivesties/isvesties isimtis: " << e.what() << endl;
+		// You can add additional logging or actions if needed
+	}
+	catch (const system_error &e)
+	{
+		cerr << "Sistemos isimtis: " << e.what() << endl;
+		// Additional handling for system errors
+	}
+	catch (const future_error &e)
+	{
+		cerr << "Ateities užduoties isimtis: " << e.what() << endl;
+		// Future error handling
+	}
+	catch (const bad_alloc &e)
+	{
+		cerr << "Priskyrimo klaida (bad_alloc): " << e.what() << endl;
+		// Handling memory allocation errors
+	}
+	catch (const exception &e)
+	{
+		cerr << "Klaida: " << e.what() << endl;
+		// General exception handling
+	}
+	catch (...)
+	{
+		cerr << "Nežinoma klaida. " << endl;
+		// Catch any unknown exceptions
+	}
 }

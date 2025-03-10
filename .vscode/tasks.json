@@ -12,7 +12,8 @@
                 "-fopenmp",
                 "-funroll-loops",
                 "-std=c++23",
-                "${file}",
+                "${fileDirname}\\main.cpp",
+                "${fileDirname}\\functions.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

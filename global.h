@@ -1,12 +1,12 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <string>
 #include <limits>
 #include <iomanip>
 #include <algorithm>
 #include <random>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <chrono>

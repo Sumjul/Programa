@@ -1,14 +1,26 @@
 #pragma once
-#include <omp.h>
+
+#include <exception>
+#include <stdexcept>
+#include <system_error>
+#include <future>
+
+using std::cerr;
+using std::endl;
+using std::ios_base;
+using std::system_error;
+using std::future_error;
+using std::bad_alloc;
+using std::exception;
 
 const int maxStud = 10000000;
 // Structure that holds student data.
 struct Student {
-	string name = "Vardenis", surname = "Pavardenis";
-	vector<int> marks;
-	int egzam = 0;
-	double average = 0;
-	double median = 0;
+    string name = "Vardenis", surname = "Pavardenis";
+    vector<int> marks;
+    int egzam = 0;
+    double average = 0;
+    double median = 0;
 };
 
 // Class that measures time.
@@ -38,7 +50,7 @@ void Generate(vector<Student>& group);
 void SortStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed);
 void OutputSorted(vector<Student>& passed, vector<Student>& failed);
 void Menu();
-void ProgramEnd(Timer totalTime);
+void ProgramEnd();
 void processException();
 
 // Global variables that hold names and surnames.

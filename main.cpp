@@ -1,11 +1,8 @@
 #include "global.h"
 #include "headers.h"
-#include "exceptions.h"
-#include "functions.cpp"
 
 int main()
 {
-	Timer totalTime;
 	vector<Student> group;
 	group.reserve(maxStud);
 	srand(time(NULL));
@@ -14,12 +11,12 @@ int main()
 	if (action == 0) return 0;
 	else if (action == 4) {
 		InputFile(group, action);
-		ProgramEnd(totalTime);
+		ProgramEnd();
 		return 0;
 	}
 	else if (action == 5) {	
 		Generate(group);
-		ProgramEnd(totalTime);
+		ProgramEnd();
 		return 0;
 	}
 	else if (action == 6) {
@@ -29,7 +26,7 @@ int main()
 		failed.reserve(maxStud);
 		SortStudents(group, passed, failed);
 		OutputSorted(passed, failed);
-		ProgramEnd(totalTime);
+		ProgramEnd();
 		return 0;
 	}
 	else Action(group, action);
@@ -37,6 +34,6 @@ int main()
 	int markAction;
 	Sort(group, markAction);
 	Output(group, cout, markAction);
-	ProgramEnd(totalTime);
+	ProgramEnd();
 	return 0;
 }
