@@ -14,7 +14,7 @@ int main()
 		ProgramEnd();
 		return 0;
 	}
-	else if (action == 5) {	
+	else if (action == 5) {
 		Generate(group);
 		ProgramEnd();
 		return 0;

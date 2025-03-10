@@ -226,11 +226,15 @@ void Generate(vector<Student>& group) {
 // Function that sorts students into two groups - those who passed and those who failed.
 void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
 	Timer sortTime;
-	
-	for (auto& final : group) {
-		if (final.average >= 5) passed.push_back(final);
-		else failed.push_back(final);
-	}
+	std::stable_partition(group.begin(), group.end(), [&](Student& final) {
+		if (final.average >= 5) {
+			passed.push_back(final);
+			return true;
+		} else {
+			failed.push_back(final);
+			return false;
+		}
+	});
 	cout << " * Studentu rusiavimas i 2 kategorijas uztruko: " << sortTime.elapsed() << " sekundziu. " << endl;
 	globalTime += sortTime.elapsed();
 }
