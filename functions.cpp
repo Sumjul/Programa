@@ -141,33 +141,40 @@ double Output(vector<Student>& group, ostream &out, int markAction) {
 // Function that reads data from a file.
 void ReadFromFile(vector<Student>& group, int action) {
 	string readName;
-	string line;
 	bool fileLoaded = false;
 	while (!fileLoaded) {
 		cout << "Iveskite failo pavadinima, is kurio bus skaitomi duomenys: " << endl;
 		cin >> readName;
 		try {
-			Timer inputTime;
-			ifstream input(readName);
+			ifstream input(readName, std::ios::binary);
 			if (!input.is_open()) {
 				throw std::ios_base::failure("Failas nerastas arba negali buti atidarytas.");
 			}
-			fileLoaded = true;
-			getline(input, line);
-			while (getline(input, line)) {
-				istringstream iss(line);
+			else fileLoaded = true;
+			Timer inputTime;
+			input.seekg(0, std::ios::end);
+			size_t fileSize = input.tellg();
+			input.seekg(0, std::ios::beg);
+			string fileContent(fileSize, '\0');
+			input.read(&fileContent[0], fileSize);
+			input.close();
+			istringstream iss(fileContent);
+			string line;
+			getline(iss, line);
+			while (getline(iss, line)) {
+				istringstream lineStream(line);
 				Student temp;
-				iss >> temp.name >> temp.surname;
-				int mark;
+				lineStream >> temp.name >> temp.surname;
 				vector<int> markInput;
-				while (iss >> mark)
+				int mark;
+				while (lineStream >> mark)
 					markInput.push_back(mark);
 				if(!markInput.empty()) {
 					temp.egzam = markInput.back();
 					markInput.pop_back();
-					temp.marks = markInput;
+					temp.marks = std::move(markInput);
 				}
-				group.push_back(temp);
+				group.emplace_back(std::move(temp));
 			}
 			input.close();
 			cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
