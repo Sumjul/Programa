@@ -13,7 +13,7 @@ int NumberCheck (int min, int max) {
 			throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta:");
 		}
 		} catch (...) {
-			processException();
+			ProcessException();
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
@@ -104,7 +104,7 @@ void Calculations(vector<Student>& group) {
 }
 
 // Function that sorts the students by name, surname or final mark.
-void Sort(vector<Student>& group, int& markAction) {
+double Sort(vector<Student>& group, int& markAction) {
 	cout << "Pasirinkite rezultatu isvedimo metoda: " << endl;
 	cout << "1 - gauti vidurkius; 2 - gauti medianas. " << endl;
 	markAction = NumberCheck(1, 2);
@@ -112,16 +112,18 @@ void Sort(vector<Student>& group, int& markAction) {
 	cout << "1 - rusiuoti pagal varda (A-Z); 2 - rusiuoti pagal pavarde (A-Z); 3 - rusiuoti pagal galutini pazymi." << endl;
 	int sortAction = NumberCheck(1, 3);
 
+	Timer sortTime;
 	if (sortAction == 1) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.name < b.name; });
 	else if (sortAction == 2) sort(group.begin(), group.end(), [](const Student &a, const Student &b) {return a.surname < b.surname; });
 	else if (sortAction == 3) {
-		if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average > b.average; });
-		else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median > b.median; });
+		if (markAction == 1) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.average < b.average; });
+		else if (markAction == 2) sort(group.begin(), group.end(), [](const Student& a, const Student& b) { return a.median < b.median; });
 	}
+	return sortTime.elapsed();
 }
 
 // Function that outputs the results to the console or a file.
-void Output(vector<Student>& group, ostream &out, int markAction) {
+double Output(vector<Student>& group, ostream &out, int markAction) {
 	Timer outputTime;
 	out << left << setw(20) << "Pavarde" << setw(20) << "Vardas";
 	if (markAction == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
@@ -132,12 +134,12 @@ void Output(vector<Student>& group, ostream &out, int markAction) {
 		if (markAction == 1) out << setw(20) << fixed << setprecision(2) << final.average << endl;
 		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
-	cout << " * Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. " << endl;
 	globalTime += outputTime.elapsed();
+	return outputTime.elapsed();
 }
 
 // Function that reads data from a file.
-void InputFile(vector<Student>& group, int action) {
+void ReadFromFile(vector<Student>& group, int action) {
 	string readName;
 	string line;
 	bool fileLoaded = false;
@@ -171,7 +173,7 @@ void InputFile(vector<Student>& group, int action) {
 			cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
 			globalTime += inputTime.elapsed();
 		} catch (...) {
-			processException();
+			ProcessException();
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
@@ -182,14 +184,14 @@ void InputFile(vector<Student>& group, int action) {
 		ofstream output(writeName);
 		int markAction;
 		Sort(group, markAction);
-		Output(group, output, markAction);
+		cout << " * Rezultatu isvedimas i faila uztruko: " << Output(group, output, markAction) << " sekundziu. " << endl;
 		output.close();
 		cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
 	}
 }
 
 // Function that generates data and writes it to a file.
-void Generate(vector<Student>& group) {
+void GenerateFile(vector<Student>& group) {
 	cout << "Iveskite failo pavadinima, i kuri bus irasyti duomenys: " << endl;
 	string fout;
 	cin >> fout;
@@ -224,8 +226,8 @@ void Generate(vector<Student>& group) {
 }
 
 // Function that sorts students into two groups - those who passed and those who failed.
-void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
-	Timer sortTime;
+double SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
+	Timer separationTime;
 	std::stable_partition(group.begin(), group.end(), [&](Student& final) {
 		if (final.average >= 5) {
 			passed.push_back(final);
@@ -235,29 +237,27 @@ void SortStudents (vector<Student>& group, vector<Student>& passed, vector<Stude
 			return false;
 		}
 	});
-	cout << " * Studentu rusiavimas i 2 kategorijas uztruko: " << sortTime.elapsed() << " sekundziu. " << endl;
-	globalTime += sortTime.elapsed();
+	globalTime += separationTime.elapsed();
+	return separationTime.elapsed();
 }
 
 // Function that outputs the sorted students to two files.
-void OutputSorted(vector<Student>& passed, vector<Student>& failed) {
+void OutputSeparated(vector<Student>& passed, vector<Student>& failed) {
 	int markAction;
-	Sort(passed, markAction);
-	Timer passedOutTime;
+	double sortTime1 = Sort(passed, markAction);
 	ofstream passedOut("kietiakai.txt");
-	Output(passed, passedOut, markAction);
+	double passedTime = Output(passed, passedOut, markAction);
 	passedOut.close();
-	double time1 = passedOutTime.elapsed();
 	cout << "Kietiakai surasyti i faila: kietiakai.txt." << endl;
-	Sort(failed, markAction);
-	Timer failedOutTime;
+	double sortTime2 = Sort(failed, markAction);
+	cout << " * Studentu rusiavimas uztruko: " << sortTime1 + sortTime2 << " sekundziu. " << endl;
+	globalTime += sortTime1 + sortTime2;
 	ofstream failedOut("vargsiukai.txt");
-	Output(failed, failedOut, markAction);
+	double failedTime = Output(failed, failedOut, markAction);
 	failedOut.close();
-	double time2 = failedOutTime.elapsed();
 	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
-	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << time1 + time2 << " sekundziu. " << endl;
-	globalTime += time1 + time2;
+	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << passedTime + failedTime << " sekundziu. " << endl;
+	globalTime += passedTime + failedTime;
 }
 
 void Menu(){
@@ -282,7 +282,7 @@ void ProgramEnd() {
 	cin.get();
 }
 
-void processException()
+void ProcessException()
 {
 	try
 	{

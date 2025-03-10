@@ -1,7 +1,6 @@
 # Efektyvumo Tyrimai (v0.4)
 
 Šiame skyriuje pateikiami išsamūs našumo testų rezultatai, susiję su duomenų failų generavimu, nuskaitymu, rūšiavimu ir išvedimu.
-[Testų ekrano nuotraukų aplankalas](../programa/performance_tests)
 
 ## 1. Failų generavimas
 

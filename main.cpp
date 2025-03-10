@@ -10,22 +10,22 @@ int main()
 	int action = NumberCheck(0, 6);
 	if (action == 0) return 0;
 	else if (action == 4) {
-		InputFile(group, action);
+		ReadFromFile(group, action);
 		ProgramEnd();
 		return 0;
 	}
 	else if (action == 5) {
-		Generate(group);
+		GenerateFile(group);
 		ProgramEnd();
 		return 0;
 	}
 	else if (action == 6) {
-		InputFile(group, action);
+		ReadFromFile(group, action);
 		vector<Student> passed, failed;
 		passed.reserve(maxStud);
 		failed.reserve(maxStud);
-		SortStudents(group, passed, failed);
-		OutputSorted(passed, failed);
+		cout << " * Studentu skirstymas i 2 kategorijas uztruko: " << SeparateStudents(group, passed, failed) << " sekundziu. " << endl;
+		OutputSeparated(passed, failed);
 		ProgramEnd();
 		return 0;
 	}
@@ -33,7 +33,7 @@ int main()
 	Calculations(group);
 	int markAction;
 	Sort(group, markAction);
-	Output(group, cout, markAction);
+	cout << " * Rezultatu isvedimas i faila uztruko: " << Output(group, cout, markAction) << " sekundziu. " << endl;
 	ProgramEnd();
 	return 0;
 }

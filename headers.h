@@ -43,15 +43,15 @@ class Timer {
 int NumberCheck (int min, int max);
 void Action(vector<Student>& group, int action);
 void Calculations(vector<Student>& group);
-void Sort(vector<Student>& group, int& markAction);
-void Output(vector<Student>& group, ostream &out, int markAction);
-void InputFile(vector<Student>& group, int action);
-void Generate(vector<Student>& group);
-void SortStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed);
-void OutputSorted(vector<Student>& passed, vector<Student>& failed);
+double Sort(vector<Student>& group, int& markAction);
+double Output(vector<Student>& group, ostream &out, int markAction);
+void ReadFromFile(vector<Student>& group, int action);
+void GenerateFile(vector<Student>& group);
+double SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed);
+void OutputSeparated(vector<Student>& passed, vector<Student>& failed);
 void Menu();
 void ProgramEnd();
-void processException();
+void ProcessException();
 
 // Global variables that hold names and surnames.
 const vector<string> names = {"Jonas", "Petras", "Antanas", "Kazys", "Marius", "Lukas", "Tadas", "Dainius", "Arvydas", "Vytautas", "Mindaugas", "Rokas", "Dovydas", "Paulius", "Tomas", "Andrius", "Giedrius", "Saulius", "Algirdas", "Simas", "Egidijus", "Justas", "Laurynas", "Martynas", "Edvinas", "Kestutis", "Julius", "Raimondas", "Deividas", "Arnoldas"};
