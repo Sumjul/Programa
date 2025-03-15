@@ -1,7 +1,6 @@
 #include "global.h"
 #include "headers.h"
 
-double globalTime = 0;
 // Function that checks if the input is a number and if it is within the specified range.
 int NumberCheck (int min, int max) {
 	int number;
@@ -123,7 +122,7 @@ double Sort(vector<Student>& group, int& markAction) {
 }
 
 // Function that outputs the results to the console or a file.
-double Output(vector<Student>& group, ostream &out, int markAction) {
+void Output(vector<Student>& group, ostream &out, int markAction) {
 	Timer outputTime;
 	out << left << setw(20) << "Pavarde" << setw(20) << "Vardas";
 	if (markAction == 1) out << setw(20) << "Galutinis (Vid.)" << endl;
@@ -135,7 +134,7 @@ double Output(vector<Student>& group, ostream &out, int markAction) {
 		else if (markAction == 2) out << setw(20) << fixed << setprecision(2) << final.median << endl;
 	}
 	globalTime += outputTime.elapsed();
-	return outputTime.elapsed();
+	cout << " * Rezultatu isvedimas uztruko: " << outputTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that reads data from a file.
@@ -191,7 +190,7 @@ void ReadFromFile(vector<Student>& group, int action) {
 		ofstream output(writeName);
 		int markAction;
 		Sort(group, markAction);
-		cout << " * Rezultatu isvedimas i faila uztruko: " << Output(group, output, markAction) << " sekundziu. " << endl;
+		Output(group, output, markAction);
 		output.close();
 		cout << "Duomenys nukopijuoti i faila: " << writeName << endl;
 	}
@@ -233,7 +232,7 @@ void GenerateFile(vector<Student>& group) {
 }
 
 // Function that sorts students into two groups - those who passed and those who failed.
-double SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
+void SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed) {
 	Timer separationTime;
 	std::stable_partition(group.begin(), group.end(), [&](Student& final) {
 		if (final.average >= 5) {
@@ -245,7 +244,7 @@ double SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<
 		}
 	});
 	globalTime += separationTime.elapsed();
-	return separationTime.elapsed();
+	cout << " * Studentu skirstymas i 2 kategorijas uztruko: " << separationTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that outputs the sorted students to two files.
@@ -253,21 +252,24 @@ void OutputSeparated(vector<Student>& passed, vector<Student>& failed) {
 	int markAction;
 	double sortTime1 = Sort(passed, markAction);
 	ofstream passedOut("kietiakai.txt");
-	double passedTime = Output(passed, passedOut, markAction);
+	Timer passedTime;
+	Output(passed, passedOut, markAction);
+	double outTime1 = passedTime.elapsed();
 	passedOut.close();
 	cout << "Kietiakai surasyti i faila: kietiakai.txt." << endl;
 	double sortTime2 = Sort(failed, markAction);
 	cout << " * Studentu rusiavimas uztruko: " << sortTime1 + sortTime2 << " sekundziu. " << endl;
 	globalTime += sortTime1 + sortTime2;
 	ofstream failedOut("vargsiukai.txt");
-	double failedTime = Output(failed, failedOut, markAction);
+	Timer failedTime;
+	Output(failed, failedOut, markAction);
+	double outTime2 = failedTime.elapsed();
 	failedOut.close();
 	cout << "Vargsiukai surasyti i faila: vargsiukai.txt." << endl;
-	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << passedTime + failedTime << " sekundziu. " << endl;
-	globalTime += passedTime + failedTime;
+	cout << " * Rezultatu isvedimas i 2 failus uztruko: " << outTime1 + outTime2 << " sekundziu. " << endl;
 }
 
-void Menu(){
+int Menu(){
 	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
 	cout << "--------------------------------------------" << endl;
 	cout << "0 - baigti darba;" << endl;
@@ -278,6 +280,10 @@ void Menu(){
 	cout << "5 - sugeneruoti duomenis ir isvesti i faila;" << endl;
 	cout << "6 - surusiuoti studentus i 2 failus." << endl;
 	cout << "--------------------------------------------" << endl;
+	cout << "Issirnikite konteinerio tipa: 7 - vector; 8 - list; 9 - deque." << endl;
+	cout << "--------------------------------------------" << endl;
+	int action = NumberCheck(0, 9);
+	return action;
 }
 
 // Function that ends the program.

@@ -13,7 +13,9 @@ using std::future_error;
 using std::bad_alloc;
 using std::exception;
 
+double globalTime = 0;
 const int maxStud = 10000000;
+
 // Structure that holds student data.
 struct Student {
     string name = "Vardenis", surname = "Pavardenis";
@@ -44,12 +46,12 @@ int NumberCheck (int min, int max);
 void Action(vector<Student>& group, int action);
 void Calculations(vector<Student>& group);
 double Sort(vector<Student>& group, int& markAction);
-double Output(vector<Student>& group, ostream &out, int markAction);
+void Output(vector<Student>& group, ostream &out, int markAction);
 void ReadFromFile(vector<Student>& group, int action);
 void GenerateFile(vector<Student>& group);
-double SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed);
+void SeparateStudents(vector<Student>& group, vector<Student>& passed, vector<Student>& failed);
 void OutputSeparated(vector<Student>& passed, vector<Student>& failed);
-void Menu();
+int Menu();
 void ProgramEnd();
 void ProcessException();
 

@@ -11,11 +11,16 @@
 #include <sstream>
 #include <chrono>
 #include <string_view>
+#include <list>
+#include <deque>
+#include <variant>
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::vector;
+using std::list;
+using std::deque;
 using std::string;
 using std::ostream;
 using std::ifstream;
