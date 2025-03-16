@@ -17,38 +17,32 @@ void ReadFromFile(Container &group, int action)
 			{
 				throw std::ios_base::failure("Failas nerastas arba negali buti atidarytas.");
 			}
-			else
+			else {
 				fileLoaded = true;
-			Timer inputTime;
-			input.seekg(0, std::ios::end);
-			size_t fileSize = input.tellg();
-			input.seekg(0, std::ios::beg);
-			string fileContent(fileSize, '\0');
-			input.read(&fileContent[0], fileSize);
-			input.close();
-			istringstream iss(fileContent);
-			string line;
-			getline(iss, line);
-			while (getline(iss, line))
-			{
-				istringstream lineStream(line);
-				Student temp;
-				lineStream >> temp.name >> temp.surname;
-				vector<int> markInput;
-				int mark;
-				while (lineStream >> mark)
-					markInput.push_back(mark);
-				if (!markInput.empty())
+				Timer inputTime;
+				string line;
+				getline(input, line);
+				while (getline(input, line))
 				{
-					temp.egzam = markInput.back();
-					markInput.pop_back();
-					temp.marks = std::move(markInput);
+					istringstream lineStream(line);
+					Student temp;
+					lineStream >> temp.name >> temp.surname;
+					vector<int> markInput;
+					int mark;
+					while (lineStream >> mark)
+						markInput.push_back(mark);
+					if (!markInput.empty())
+					{
+						temp.egzam = markInput.back();
+						markInput.pop_back();
+						temp.marks = std::move(markInput);
+					}
+					group.emplace_back(std::move(temp));
 				}
-				group.emplace_back(std::move(temp));
+				input.close();
+				cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
+				globalTime += inputTime.elapsed();
 			}
-			input.close();
-			cout << " * Duomenu skaitymas uztruko: " << inputTime.elapsed() << " sekundziu. " << endl;
-			globalTime += inputTime.elapsed();
 		}
 		catch (...)
 		{
