@@ -1,5 +1,6 @@
 #include "global.h"
 #include "headers.h"
+#include "templates.h"
 
 int main()
 {
@@ -7,7 +8,7 @@ int main()
 	//vector<Student> group, passed, failed; group.reserve(maxStud);
 	//deque<Student> group, passed, failed;
 	list<Student> group, passed, failed;
-	
+
 	srand(time(NULL));
 	int action = Menu();
 	if (action == 0) return 0;

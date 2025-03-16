@@ -3,6 +3,8 @@
 double globalTime = 0;
 
 
+
+
 // Function that checks if the input is a number and if it is within the specified range.
 int NumberCheck (int min, int max) {
 	int number;
