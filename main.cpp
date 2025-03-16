@@ -3,8 +3,11 @@
 
 int main()
 {
-	vector<Student> group;
-	group.reserve(maxStud);
+	//Uncomment the container you want to use
+	//vector<Student> group, passed, failed; group.reserve(maxStud);
+	//deque<Student> group, passed, failed;
+	list<Student> group, passed, failed;
+	
 	srand(time(NULL));
 	int action = Menu();
 	if (action == 0) return 0;
@@ -16,9 +19,6 @@ int main()
 	}
 	else if (action == 6) {
 		ReadFromFile(group, action);
-		vector<Student> passed, failed;
-		passed.reserve(maxStud);
-		failed.reserve(maxStud);
 		SeparateStudents(group, passed, failed);
 		OutputSeparated(passed, failed);
 	}
