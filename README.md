@@ -1,52 +1,113 @@
-# Efektyvumo Tyrimai (v0.4)
+# Efektyvumo Tyrimai (v1.0)
 
-Šiame skyriuje pateikiami išsamūs našumo testų rezultatai, susiję su duomenų failų generavimu, nuskaitymu, rūšiavimu ir išvedimu.
-[Testų ekrano nuotraukų aplankalas](../programa/performance_tests)
+Šiame skyriuje pateikiami išsamūs našumo testų rezultatai, susiję su duomenų failų nuskaitymu, rūšiavimu ir skyrstymu į dvį grupes priklausomai nuo naudojamo konteinerio tipo.
 
-## 1. Failų generavimas
+## 1. Duomenų nuskaitymas iš failų į atitinkamą konteinerį
 
-| Failas            | Sukūrimo laikas (s) |
-|------------------|-----------------|
-| `st1000.txt`     | 0.0101944       |
-| `st10000.txt`    | 0.0466155       |
-| `st100000.txt`   | 0.553198        |
-| `st1000000.txt`  | 4.72237         |
-| `st10000000.txt` | 56.8465         |
+### 1.1. std::vector
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0065674        |
+| `st10000.txt`    | 0.0602441        |
+| `st100000.txt`   | 0.617428         |
+| `st1000000.txt`  | 4.29796          |
+| `st10000000.txt` | 138.158          |
+
+### 1.2. std::deque
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0081942        |
+| `st10000.txt`    | 0.0656441        |
+| `st100000.txt`   | 0.650874         |
+| `st1000000.txt`  | 4.69346          |
+| `st10000000.txt` | 182.16           |
+
+### 1.3. std::list
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0074983        |
+| `st10000.txt`    | 0.0648295        |
+| `st100000.txt`   | 0.696449         |
+| `st1000000.txt`  | 5.86576          |
+| `st10000000.txt` | 198.764          |
 
 ---
 
-## 2. Duomenų apdorojimas
+## 2. Studentų rūšiavimas didėjimo tvarką konteineryje
 
-### 2.1. Duomenų nuskaitymas iš failo
+### 2.1. std::vector
 
-| Failas            | Nuskaitymo laikas (s) |
+| Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     | 0.027287         |
-| `st10000.txt`    | 0.0723405        |
-| `st100000.txt`   | 0.866603         |
-| `st1000000.txt`  | 4.49162          |
-| `st10000000.txt` | 62.7062          |
+| `st1000.txt`     | 0.0001239        |
+| `st10000.txt`    | 0.0009806        |
+| `st100000.txt`   | 0.0113056        |
+| `st1000000.txt`  | 0.147859         |
+| `st10000000.txt` | 1.67796          |
 
-### 2.2. Studentų rūšiavimas į dvi grupes
+### 2.2. std::deque
 
-| Failas            | Rūšiavimo laikas (s) |
+| Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     | 0.0018859        |
-| `st10000.txt`    | 0.165601         |
-| `st100000.txt`   | 1.23176          |
-| `st1000000.txt`  | 2.14116          |
-| `st10000000.txt` | 10.2318          |
+| `st1000.txt`     | 0.0001762        |
+| `st10000.txt`    | 0.0017455        |
+| `st100000.txt`   | 0.0169953        |
+| `st1000000.txt`  | 0.263941         |
+| `st10000000.txt` | 3.38628          |
 
-### 2.3. Surūšiuotų studentų išvedimas į du failus
+### 2.3. std::list
 
-| Failas            | Išvedimo laikas (s) |
+| Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     | 0.0131835        |
-| `st10000.txt`    | 0.0620217        |
-| `st100000.txt`   | 0.315976         |
-| `st1000000.txt`  | 1.26934          |
-| `st10000000.txt` | 41.999           |
+| `st1000.txt`     | 0.0001496        |
+| `st10000.txt`    | 0.001762         |
+| `st100000.txt`   | 0.0978846        |
+| `st1000000.txt`  | 0.675113         |
+| `st10000000.txt` | 10.812           |
 
 ---
 
-**Pastaba:** Testai buvo atlikti naudojant šios versijos optimizacijas, siekiant įvertinti našumą skirtingo dydžio duomenų failuose.
+## 3. Studentų skirstymas į dvi grupes/kategorijas
+
+### 3.1. std::vector
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0030289        |
+| `st10000.txt`    | 0.164812         |
+| `st100000.txt`   | 1.16997          |
+| `st1000000.txt`  | 2.00772          |
+| `st10000000.txt` | 11.0071          |
+
+### 3.2. std::deque
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0011855        |
+| `st10000.txt`    | 0.0070657        |
+| `st100000.txt`   | 0.0772563        |
+| `st1000000.txt`  | 1.05031          |
+| `st10000000.txt` | 10.4359          |
+
+### 3.3. std::list
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0018212        |
+| `st10000.txt`    | 0.0095576        |
+| `st100000.txt`   | 0.0978846        |
+| `st1000000.txt`  | 0.888093         |
+| `st10000000.txt` | 14.093           |
+
+- **CPU:** i7-12700H; 2.70 GHz
+- **RAM:** SODIMM; 16,0 GB
+- **SSD:** Micron_2450; 954 GB
+
+## 4. Išvados
+
+- **std::vector** yra optimalesnis pasirinkimas tiek duomenų nuskaitymui, tiek rūšiavimui, tiek skirstymui į grupes, ypač didesniuose failuose.
+
+- **std::deque** ir **std::list** gali būti tinkami mažesniems duomenims, tačiau su didesniais failais jų našumas gerokai prastesnis.
