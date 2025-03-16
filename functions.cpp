@@ -2,20 +2,23 @@
 #include "headers.h"
 double globalTime = 0;
 
-
-
-
 // Function that checks if the input is a number and if it is within the specified range.
-int NumberCheck (int min, int max) {
+int NumberCheck(int min, int max)
+{
 	int number;
-	while (true) {
-		try {
-		if (cin >> number && number >= min && number <= max)
-			break;
-		else {
-			throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta:");
+	while (true)
+	{
+		try
+		{
+			if (cin >> number && number >= min && number <= max)
+				break;
+			else
+			{
+				throw std::invalid_argument("Ivestis netinkama. Iveskite dar karta:");
+			}
 		}
-		} catch (...) {
+		catch (...)
+		{
 			ProcessException();
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -24,7 +27,8 @@ int NumberCheck (int min, int max) {
 	return number;
 }
 
-int Menu(){
+int Menu()
+{
 	cout << "Sveiki atvyke i pazymiu skaiciuokle! Pasirinkite veiksma spausdami skaiciu ir tada spauskite Enter." << endl;
 	cout << "--------------------------------------------" << endl;
 	cout << "0 - baigti darba;" << endl;
@@ -39,7 +43,8 @@ int Menu(){
 }
 
 // Function that ends the program.
-void ProgramEnd() {
+void ProgramEnd()
+{
 	cout << " * Programa veike: " << globalTime << " sekundziu. " << endl;
 	cout << "Aciu, kad naudojates pazymiu skaiciuokle!" << endl;
 	cout << "Paspauskite Enter, kad uzbaigtumete programos darba." << endl;
@@ -84,4 +89,3 @@ void ProcessException()
 		// Catch any unknown exceptions
 	}
 }
-

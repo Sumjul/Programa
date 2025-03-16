@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <list>
+#include <deque>
 #include <string>
 #include <limits>
 #include <iomanip>
@@ -10,10 +12,6 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
-#include <string_view>
-#include <list>
-#include <deque>
-#include <variant>
 
 using std::cout;
 using std::cin;
@@ -29,6 +27,4 @@ using std::left;
 using std::setw;
 using std::fixed;
 using std::setprecision;
-using std::string_view;
 using std::sort;
-using std::istringstream;
