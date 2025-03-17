@@ -1,5 +1,5 @@
-#include "global.h"
-#include "headers.h"
+#include "../include/global.h"
+#include "../include/headers.h"
 double globalTime = 0;
 
 // Function that checks if the input is a number and if it is within the specified range.

@@ -1,6 +1,6 @@
-#include "global.h"
-#include "headers.h"
-#include "templates.h"
+#include "../include/global.h"
+#include "../include/headers.h"
+#include "../include/templates.h"
 
 int main()
 {
