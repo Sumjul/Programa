@@ -222,31 +222,29 @@ void Output(Container &group, ostream &out, int markAction)
 
 // Function that sorts students into two groups - those who passed and those who failed.
 template <typename Container>
-void SeparateStudents(Container &group, Container &passed, Container &failed)
+void SeparateStudents(Container &group, Container &failed)
 {
 	Timer separationTime;
-	std::stable_partition(group.begin(), group.end(), [&](Student &final)
-						  {
-		if (final.average >= 5) {
-			passed.push_back(final);
-			return true;
-		} else {
+	group.erase(std::remove_if(group.begin(), group.end(), [&](const Student &final) {
+		if (final.average < 5) {
 			failed.push_back(final);
-			return false;
-		} });
+			return true;
+		}
+		return false;
+	}), group.end());
 	globalTime += separationTime.elapsed();
 	cout << " * Studentu skirstymas i 2 kategorijas uztruko: " << separationTime.elapsed() << " sekundziu. " << endl;
 }
 
 // Function that outputs the sorted students to two files.
 template <typename Container>
-void OutputSeparated(Container &passed, Container &failed)
+void OutputSeparated(Container &group, Container &failed)
 {
 	int markAction;
-	double sortTime1 = Sort(passed, markAction);
+	double sortTime1 = Sort(group, markAction);
 	ofstream passedOut("kietiakai.txt");
 	Timer passedTime;
-	Output(passed, passedOut, markAction);
+	Output(group, passedOut, markAction);
 	double outTime1 = passedTime.elapsed();
 	passedOut.close();
 	cout << "Kietiakai surasyti i faila: kietiakai.txt." << endl;
