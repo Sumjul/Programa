@@ -149,31 +149,31 @@ Nuo 5 punkto aprašyti Studentų rūšiavimo (dalijimo) į dvi kategorijas opt
 
 | Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     |         |
-| `st10000.txt`    |          |
-| `st100000.txt`   |           |
-| `st1000000.txt`  |           |
-| `st10000000.txt` |           |
+| `st1000.txt`     | 0.0004561        |
+| `st10000.txt`    | 0.0084384        |
+| `st100000.txt`   | 0.596154         |
+| `st1000000.txt`  | 0.959693         |
+| `st10000000.txt` | 7.35548          |
 
 ### 6.2. std::deque
 
 | Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     |         |
-| `st10000.txt`    |         |
-| `st100000.txt`   |         |
-| `st1000000.txt`  |           |
-| `st10000000.txt` |           |
+| `st1000.txt`     | 0.0005288        |
+| `st10000.txt`    | 0.0030585        |
+| `st100000.txt`   | 0.029497         |
+| `st1000000.txt`  | 0.425277         |
+| `st10000000.txt` | 10.665           |
 
 ### 6.3. std::list
 
 | Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     |         |
-| `st10000.txt`    |         |
-| `st100000.txt`   |         |
-| `st1000000.txt`  |          |
-| `st10000000.txt` |            |
+| `st1000.txt`     | 0.0008039        |
+| `st10000.txt`    | 0.0043086        |
+| `st100000.txt`   | 0.041076         |
+| `st1000000.txt`  | 0.473199         |
+| `st10000000.txt` | 16.7492          |
 
 ## 7. Bendro studentų konteinerio skaidymas (rūšiavimas) panaudojant greičiausiai veikianti 1 arba 2 strategiją  įtraukiant į ją "efektyvius" darbo su konteineriais metodus
 
