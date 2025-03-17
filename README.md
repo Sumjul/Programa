@@ -183,7 +183,7 @@ Nuo 5 punkto aprašyti Studentų rūšiavimo (dalijimo) į dvi kategorijas opt
 
 ---
 
-## 8. Bendro studentų konteinerio skaidymas (rūšiavimas) panaudojant greičiausiai veikianti 1 arba 2 strategiją  įtraukiant į ją "efektyvius" darbo su konteineriais metodus
+## 8. Bendro studentų konteinerio skaidymas (rūšiavimas) panaudojant greičiausiai veikiančią 2 strategiją įtraukiant į ją "efektyvius" darbo su konteineriais metodus
 
 ### 8.1. std::vector
 
