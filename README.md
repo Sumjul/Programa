@@ -175,36 +175,48 @@ Nuo 5 punkto aprašyti Studentų rūšiavimo (dalijimo) į dvi kategorijas opt
 | `st1000000.txt`  | 0.473199         |
 | `st10000000.txt` | 16.7492          |
 
-## 7. Bendro studentų konteinerio skaidymas (rūšiavimas) panaudojant greičiausiai veikianti 1 arba 2 strategiją  įtraukiant į ją "efektyvius" darbo su konteineriais metodus
+## 7. Išvados
 
-### 7.1. std::vector
+- Testai parodė, kad **naudojant tik vieną papildomą konteinerį** („vargšiukai“) skaidymui, pasiekiamas geresnis našumas nei dalijant į du atskirus konteinerius.
 
-| Failas           | Laikas (s)       |
-|------------------|------------------|
-| `st1000.txt`     |         |
-| `st10000.txt`    |          |
-| `st100000.txt`   |           |
-| `st1000000.txt`  |           |
-| `st10000000.txt` |           |
+- Geriausią rezultatą demonstravo **std::vector**, ypač su dideliais duomenų rinkiniais, o std::deque buvo konkurencingas mažesniems rinkiniams, tuo tarpu std::list veikė stabiliai, bet lėčiau dėl dažnų trynimo operacijų.
 
-### 7.2. std::deque
+---
+
+## 8. Bendro studentų konteinerio skaidymas (rūšiavimas) panaudojant greičiausiai veikianti 1 arba 2 strategiją  įtraukiant į ją "efektyvius" darbo su konteineriais metodus
+
+### 8.1. std::vector
 
 | Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     |         |
-| `st10000.txt`    |         |
-| `st100000.txt`   |         |
-| `st1000000.txt`  |           |
-| `st10000000.txt` |           |
+| `st1000.txt`     | 0.0007574        |
+| `st10000.txt`    | 0.0030434        |
+| `st100000.txt`   | 0.0268513        |
+| `st1000000.txt`  | 0.248731         |
+| `st10000000.txt` | 7.1233           |
 
-### 7.3. std::list
+### 8.2. std::deque
 
 | Failas           | Laikas (s)       |
 |------------------|------------------|
-| `st1000.txt`     |         |
-| `st10000.txt`    |         |
-| `st100000.txt`   |         |
-| `st1000000.txt`  |          |
-| `st10000000.txt` |            |
+| `st1000.txt`     | 0.0007101        |
+| `st10000.txt`    | 0.0039114        |
+| `st100000.txt`   | 0.0365197        |
+| `st1000000.txt`  | 0.374967         |
+| `st10000000.txt` | 11.3201          |
 
-## 8. Išvados
+### 8.3. std::list
+
+| Failas           | Laikas (s)       |
+|------------------|------------------|
+| `st1000.txt`     | 0.0007637        |
+| `st10000.txt`    | 0.0064658        |
+| `st100000.txt`   | 0.0537253        |
+| `st1000000.txt`  | 0.553813         |
+| `st10000000.txt` | 17.4387          |
+
+## 9. Išvados
+
+- Išskyrimas į 2 kategorijas buvo patobulintas naudojant **std::partition**, **insert** ir **erase** metodus, kas leido efektyviai perkelti "vargšiukai" į atskirą konteinerį ir pašalinti juos iš pagrindinio sąrašo.
+
+- Testų rezultatai parodė, kad šis metodas reikšmingai optimizavo veikimo laiką, **ypač naudojant std::vector**, tačiau std::list išliko lėčiausia alternatyva dėl dažnų operacijų su rodyklėmis.
